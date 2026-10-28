@@ -18,7 +18,7 @@ import { formatPrice } from "@/utils/catalogue";
 import { ui } from "@/utils/ui";
 import PageHeader from "@/components/common/PageHeader";
 import EmptyState from "@/components/common/EmptyState";
-import StatusBadge from "@/components/common/StatusBadge";
+import StatusBadge from "@/components/common/CatalogueStatusBadge";
 
 function Row({ label, children }) {
   return (
