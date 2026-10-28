@@ -9,3 +9,11 @@ export function formatPrice(price) {
   const amount = Number(price.amount).toLocaleString("en-US", { maximumFractionDigits: 2 });
   return `${price.currency || "LKR"} ${amount}${price.pricing_type === "Hourly" ? " / hour" : ""}`;
 }
+
+// Allowed next statuses (must match backend serviceService.js)
+export const SERVICE_STATUS_TRANSITIONS = {
+  Active: ["Inactive", "Temporarily Unavailable", "Archived"],
+  Inactive: ["Active", "Archived"],
+  "Temporarily Unavailable": ["Active", "Inactive", "Archived"],
+  Archived: ["Inactive"],
+};
