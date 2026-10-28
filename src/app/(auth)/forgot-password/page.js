@@ -1,6 +1,6 @@
 export default function ForgotPasswordPage() {
   return (
-    <div className="container">
+    <div className="mx-auto w-full max-w-[1280px] px-6">
       <h1>Forgot Password</h1>
       <p>Password reset request placeholder</p>
     </div>

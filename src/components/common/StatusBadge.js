@@ -5,33 +5,33 @@ export default function StatusBadge({ status, type = "booking" }) {
 
   const normalized = status.toLowerCase();
 
-  let badgeClass = "badge-neutral";
+  let badgeClass = "bg-slate-100 text-slate-700";
 
   if (
     ["active", "confirmed", "completed", "successful", "verified", "available", "approved", "published", "delivered", "read"].includes(normalized)
   ) {
-    badgeClass = "badge-success";
+    badgeClass = "bg-[#dcfce7] text-[var(--status-success)]";
   } else if (
     ["requested", "pending", "pending confirmation", "awaiting approval", "under review", "in investigation", "calculated", "submitted"].includes(normalized)
   ) {
-    badgeClass = "badge-pending";
+    badgeClass = "bg-[#fef3c7] text-[var(--status-warning)]";
   } else if (
     ["in progress", "started", "on the way", "processing", "rescheduled", "escalated", "partially adjusted", "partially refunded"].includes(normalized)
   ) {
-    badgeClass = "badge-info";
+    badgeClass = "bg-[var(--status-info)] text-[#c2410c]";
   } else if (
     ["rejected", "cancelled", "failed", "suspended", "restricted", "removed", "closed"].includes(normalized)
   ) {
-    badgeClass = "badge-danger";
+    badgeClass = "bg-[#fee2e2] text-[var(--status-error)]";
   } else if (
     ["disputed", "on hold", "flagged"].includes(normalized)
   ) {
-    badgeClass = "badge-warning";
+    badgeClass = "bg-[#fef3c7] text-[var(--status-warning)]";
   }
 
   return (
-    <span className={`badge ${badgeClass}`}>
-      <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "currentColor" }} />
+    <span className={`inline-flex items-center rounded-full px-[0.6rem] py-1 text-xs font-semibold ${badgeClass}`}>
+      <span className="h-[6px] w-[6px] rounded-full bg-current" />
       {status}
     </span>
   );

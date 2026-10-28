@@ -5,7 +5,7 @@ export default function Modal({ isOpen, title, children, onClose }) {
       <div className="glass-panel" style={{ width: 480, padding: "2rem" }}>
         <h3>{title}</h3>
         <div>{children}</div>
-        <button onClick={onClose} className="btn btn-secondary btn-sm" style={{ marginTop: "1rem" }}>Close</button>
+        <button onClick={onClose} className="mt-4 inline-flex items-center justify-center gap-2 rounded-[10px] border border-[var(--secondary-accent)] bg-[var(--bg-secondary)] px-5 py-[0.65rem] text-[0.925rem] font-semibold text-[var(--text-main)] transition-all duration-200 ease-[ease-in-out] hover:bg-[#fed7aa]">Close</button>
       </div>
     </div>
   );

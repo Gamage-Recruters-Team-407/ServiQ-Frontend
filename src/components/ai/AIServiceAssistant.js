@@ -146,14 +146,12 @@ export default function AIServiceAssistant() {
                   placeholder="Type what you need..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="form-input"
-                  style={{ padding: "0.6rem 0.9rem", fontSize: "0.9rem" }}
+                  className="w-full rounded-[10px] border border-[var(--border-light)] bg-[var(--bg-card)] px-[0.9rem] py-[0.6rem] text-[0.9rem] text-[var(--text-main)] transition-colors duration-200 ease-[ease-in-out] focus:border-[var(--primary-orange)] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="btn btn-primary btn-sm"
-                  style={{ whiteSpace: "nowrap" }}
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-[10px] bg-[var(--primary-orange)] px-5 py-[0.65rem] text-[0.925rem] font-semibold text-white transition-all duration-200 ease-[ease-in-out] hover:bg-[var(--primary-hover)]"
                 >
                   {isProcessing ? "Matching..." : "Find"}
                 </button>
@@ -192,7 +190,7 @@ export default function AIServiceAssistant() {
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.3rem" }}>
                         <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{rec.service_name}</span>
-                        <span className="badge badge-success" style={{ fontSize: "0.7rem" }}>
+                        <span className="inline-flex items-center rounded-full bg-[#dcfce7] px-[0.6rem] py-1 text-[0.7rem] font-semibold text-[var(--status-success)]">
                           {rec.badge}
                         </span>
                       </div>
@@ -205,8 +203,7 @@ export default function AIServiceAssistant() {
                         <Link
                           href={`/services/${rec.id}`}
                           onClick={() => setIsOpen(false)}
-                          className="btn btn-secondary btn-sm"
-                          style={{ padding: "0.25rem 0.6rem", fontSize: "0.75rem" }}
+                          className="inline-flex items-center justify-center gap-2 rounded-[10px] border border-[var(--secondary-accent)] bg-[var(--bg-secondary)] px-[0.6rem] py-1 text-xs font-semibold text-[var(--text-main)] transition-all duration-200 ease-[ease-in-out] hover:bg-[#fed7aa]"
                         >
                           Book Now
                         </Link>

@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -10,9 +9,7 @@ export default function HomePage() {
           servi<span>Q</span>
         </div>
 
-        <div className={styles.teamBadge}>
-          TEAM 407
-        </div>
+        <div className={styles.teamBadge}>TEAM 407</div>
       </header>
 
       <section className={styles.hero}>
@@ -33,13 +30,10 @@ export default function HomePage() {
           Welcome to <span>serviQ</span>
         </h1>
 
-        
-
         <p className={styles.description}>
-          Welcome to the official serviQ development
-          environment. Together, we're building an
-          AI-powered marketplace that connects customers
-          with trusted local service professionals.
+          Welcome to the official serviQ development environment. Together,
+          we're building an AI-powered marketplace that connects customers with
+          trusted local service professionals.
         </p>
 
         <div className={styles.status}>
@@ -64,8 +58,8 @@ export default function HomePage() {
             <div className={styles.cardIcon}>01</div>
             <h3>Frontend Repository</h3>
             <p>
-              Explore the Next.js project structure,
-              components, and development resources.
+              Explore the Next.js project structure, components, and development
+              resources.
             </p>
             <span>Explore Repository ↗</span>
           </a>
@@ -79,8 +73,8 @@ export default function HomePage() {
             <div className={styles.cardIcon}>02</div>
             <h3>Backend Repository</h3>
             <p>
-              Explore the Node.js backend structure,
-              REST APIs, and MongoDB integration.
+              Explore the Node.js backend structure, REST APIs, and MongoDB
+              integration.
             </p>
             <span>Explore Repository ↗</span>
           </a>
@@ -94,8 +88,8 @@ export default function HomePage() {
             <div className={styles.cardIcon}>03</div>
             <h3>Team Collaboration</h3>
             <p>
-              Collaborate with your teammates,
-              manage branches, and submit pull requests.
+              Collaborate with your teammates, manage branches, and submit pull
+              requests.
             </p>
             <span>View Organization ↗</span>
           </a>

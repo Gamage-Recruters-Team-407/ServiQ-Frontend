@@ -1,6 +1,6 @@
 export default function NewBookingPage() {
   return (
-    <div className="container">
+    <div className="mx-auto w-full max-w-[1280px] px-6">
       <h1>New Service Booking</h1>
       <p>Booking creation and schedule selection placeholder (SRS §13, §14)</p>
     </div>

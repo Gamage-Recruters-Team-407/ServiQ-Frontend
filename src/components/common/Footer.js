@@ -1,110 +1,97 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "var(--bg-secondary)",
-        borderTop: "1px solid var(--border-subtle)",
-        padding: "4rem 0 2rem",
-        marginTop: "auto"
-      }}
-    >
-      <div className="container">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "2.5rem",
-            marginBottom: "3rem"
-          }}
-        >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "8px",
-                  background: "var(--brand-gradient)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1rem"
-                }}
-              >
-                S
-              </div>
-              <span style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem", fontWeight: 800 }}>
-                ServiQ
-              </span>
-            </div>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              AI-Powered Local Services Marketplace connecting verified professionals with customers across Sri Lanka with transparent pricing, instant booking, and secure escrow payments.
+    <footer className="mt-auto border-t border-[var(--border-light)] bg-[var(--bg-main)] py-4">
+      <div className="mx-auto w-full max-w-[1380px] px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8">
+          <div className="flex flex-col justify-center gap-1 text-left max-w-xs">
+            <div className="mb-2 flex justify-start items-center gap-2"></div>
+            <p className="text-[0.75rem] leading-[1.5] text-[var(--text-secondary)]">
+              AI-Powered Local Services Marketplace connecting verified
+              professionals with customers across Sri Lanka with transparent
+              pricing, instant booking, and secure escrow payments.
             </p>
           </div>
 
-          <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              Explore Services
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/services?category=Home+Repairs" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Home Repairs & Maintenance</Link></li>
-              <li><Link href="/services?category=Electrical" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Electrical Services</Link></li>
-              <li><Link href="/services?category=Plumbing" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Plumbing & Sanitation</Link></li>
-              <li><Link href="/services?category=Cleaning" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Deep Cleaning & Janitorial</Link></li>
-              <li><Link href="/services/compare" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Comparison</Link></li>
-            </ul>
-          </div>
+          <div className="flex flex-col items-end text-left">
+            <ul className="flex list-none flex-col gap-[0.6rem] p-0 items-start">
+              <li className="flex items-center gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#F97316"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7s0 6 8 10z" />
+                </svg>
+                <span className="text-[0.8rem] text-[var(--text-secondary)]">
+                  Identity Verified Providers
+                </span>
+              </li>
 
-          <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              For Providers
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/register?role=provider" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Become a Service Provider</Link></li>
-              <li><Link href="/provider/dashboard" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Portal</Link></li>
-              <li><Link href="/provider/earnings" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Earnings & Payouts</Link></li>
-              <li><Link href="/provider/availability" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Calendar & Scheduling</Link></li>
-            </ul>
-          </div>
+              <li className="flex items-center gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#F97316"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span className="text-[0.8rem] text-[var(--text-secondary)]">
+                  Escrow Payment Protection
+                </span>
+              </li>
 
-          <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              Platform & Trust
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🛡️ Identity Verified Providers</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🔒 Escrow Payment Protection</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>⚖️ Structured Dispute Resolution</span></li>
-              <li><Link href="/admin/dashboard" style={{ color: "var(--brand-primary)", fontSize: "0.9rem" }}>Platform Administration</Link></li>
+              <li className="flex items-center gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#F97316"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="16" />
+                  <line x1="8" y1="12" x2="16" y2="12" />
+                </svg>
+                <span className="text-[0.8rem] text-[var(--text-secondary)]">
+                  Structured Dispute Resolution
+                </span>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border-subtle)",
-            paddingTop: "1.5rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "1rem",
-            fontSize: "0.85rem",
-            color: "var(--text-muted)"
-          }}
-        >
-          <div>
-            © 2026 Gamage Recruiters (Pvt) Ltd. All rights reserved. ServiQ Marketplace SRS v1.0.
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-[var(--border-light)] pt-3 text-center text-[0.85rem] text-[var(--text-secondary)] sm:text-left">
+          <div className="flex-1">
+            © 2026 All rights reserved. ServiQ Marketplace.
           </div>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Dispute Policies</span>
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 sm:justify-end">
+            <span className="cursor-pointer transition-colors duration-200 ease-[ease-in-out]">
+              Privacy Policy
+            </span>
+            <span className="cursor-pointer transition-colors duration-200 ease-[ease-in-out]">
+              Terms of Service
+            </span>
+            <span className="cursor-pointer transition-colors duration-200 ease-[ease-in-out]">
+              Dispute Policies
+            </span>
           </div>
         </div>
       </div>
