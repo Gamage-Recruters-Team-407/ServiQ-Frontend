@@ -1,7 +1,11 @@
 import { apiClient } from "./api";
 
 export const bookingService = {
-  createBooking: (data) => apiClient("/bookings", { method: "POST", body: data }),
+  createBooking: (data) =>
+    apiClient("/bookings", {
+      method: "POST",
+      body: data
+    }),
   getBookings: (params = {}) => {
     const query = new URLSearchParams(params).toString();
     return apiClient(`/bookings${query ? `?${query}` : ""}`);
@@ -21,5 +25,17 @@ export const bookingService = {
     apiClient(`/bookings/${id}/complete`, {
       method: "POST",
       body: { notes }
+    }),
+  getProviderBookings: () => apiClient("/provider/bookings"),
+  getProviderBookingById: (id) =>
+    apiClient(`/provider/bookings/${id}`),
+  acceptProviderBooking: (id) =>
+    apiClient(`/provider/bookings/${id}/accept`, {
+      method: "PATCH"
+    }),
+  rejectProviderBooking: (id, reason = "") =>
+    apiClient(`/provider/bookings/${id}/reject`, {
+      method: "PATCH",
+      body: { reason }
     })
 };
