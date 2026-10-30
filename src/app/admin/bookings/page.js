@@ -3,95 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { adminService } from "@/services/adminService";
 
-// Fallback preview data matching the client's screenshot exactly
-const PREVIEW_MOCK_BOOKINGS = [
-  {
-    _id: "mock-1",
-    booking_reference: "BK-5912",
-    customer_name: "Nimali Perera",
-    provider_name: "CoolAir Technicians",
-    service_name: "AC Servicing",
-    schedule_formatted: "21 Oct, 10:00",
-    total_amount: 6500,
-    currency: "LKR",
-    payment_status: "Unpaid",
-    booking_status: "Requested",
-  },
-  {
-    _id: "mock-2",
-    booking_reference: "BK-5911",
-    customer_name: "Kasun Fernando",
-    provider_name: "CleanNest Services",
-    service_name: "Deep House Cleaning",
-    schedule_formatted: "21 Oct, 14:00",
-    total_amount: 4200,
-    currency: "LKR",
-    payment_status: "Paid",
-    booking_status: "Confirmed",
-  },
-  {
-    _id: "mock-3",
-    booking_reference: "BK-5910",
-    customer_name: "Dilani Silva",
-    provider_name: "FixIt Pro Lanka",
-    service_name: "Pipe Leak Repair",
-    schedule_formatted: "20 Oct, 09:30",
-    total_amount: 3800,
-    currency: "LKR",
-    payment_status: "Paid",
-    booking_status: "In Progress",
-  },
-  {
-    _id: "mock-4",
-    booking_reference: "BK-5909",
-    customer_name: "Ruwan Jayasinghe",
-    provider_name: "BrightSpark Electricals",
-    service_name: "Electrical Wiring",
-    schedule_formatted: "19 Oct, 11:00",
-    total_amount: 12000,
-    currency: "LKR",
-    payment_status: "Paid",
-    booking_status: "Completed",
-  },
-  {
-    _id: "mock-5",
-    booking_reference: "BK-5908",
-    customer_name: "Sanduni Weerasinghe",
-    provider_name: "GreenLeaf Gardening",
-    service_name: "Garden Maintenance",
-    schedule_formatted: "19 Oct, 08:00",
-    total_amount: 5500,
-    currency: "LKR",
-    payment_status: "Refunded",
-    booking_status: "Cancelled",
-  },
-  {
-    _id: "mock-6",
-    booking_reference: "BK-5907",
-    customer_name: "Tharindu Bandara",
-    provider_name: "Sunil Perera",
-    service_name: "Interior Painting",
-    schedule_formatted: "18 Oct, 09:00",
-    total_amount: 28000,
-    currency: "LKR",
-    payment_status: "Paid",
-    booking_status: "Disputed",
-  },
-  {
-    _id: "mock-7",
-    booking_reference: "BK-5906",
-    customer_name: "Chamari Wickramasinghe",
-    provider_name: "Nadeesha Weerakoon",
-    service_name: "Deep House Cleaning",
-    schedule_formatted: "18 Oct, 13:00",
-    total_amount: 4800,
-    currency: "LKR",
-    payment_status: "Paid",
-    booking_status: "Completed",
-  },
-];
-
-
 const BOOKING_STATUS_CONFIG = {
   Requested:   { bg: "bg-[#FEF3E7]", text: "text-[#C2410C]", dot: "bg-[#EA580C]" },
   Accepted:    { bg: "bg-[#EDFCF2]", text: "text-[#15803D]", dot: "bg-[#22C55E]" },
@@ -135,37 +46,37 @@ function PaymentBadge({ paymentStatus }) {
 }
 
 export default function AdminBookingsPage() {
-  const [bookings, setBookings]           = useState(PREVIEW_MOCK_BOOKINGS);
+  const [bookings, setBookings]           = useState([]);
   const [statFilter, setStatFilter]       = useState("All");
   const [search, setSearch]               = useState("");
   const [paymentFilter, setPaymentFilter] = useState("");
-  const [loading, setLoading]             = useState(false);
+  const [loading, setLoading]             = useState(true);
   const [selectedBooking, setSelected]    = useState(null);
 
   // Status counts for the top stat cards
   const [stats, setStats] = useState({
-    All: 12,
-    Requested: 1,
-    Confirmed: 2,
-    "In Progress": 1,
-    Completed: 4,
-    Cancelled: 1,
-    Disputed: 1
+    All: 0,
+    Requested: 0,
+    Confirmed: 0,
+    "In Progress": 0,
+    Completed: 0,
+    Cancelled: 0,
+    Disputed: 0
   });
 
   const fetchRealBookings = useCallback(async () => {
     try {
       setLoading(true);
       const res = await adminService.getBookings({ limit: 100 });
-      if (res?.data?.bookings && res.data.bookings.length > 0) {
+      if (res?.data?.bookings) {
         const transformed = res.data.bookings.map(b => ({
           _id: b._id,
           booking_reference: b.booking_reference,
-          customer_name: b.customer_id?.user_id ? `${b.customer_id.user_id.first_name} ${b.customer_id.user_id.last_name}` : "Unknown Customer",
-          provider_name: b.provider_id?.user_id ? `${b.provider_id.user_id.first_name} ${b.provider_id.user_id.last_name}` : "Unknown Provider",
+          customer_name: b.customer_id?.user_id ? `${b.customer_id.user_id.first_name || ""} ${b.customer_id.user_id.last_name || ""}`.trim() : "Unknown Customer",
+          provider_name: b.provider_id?.user_id ? `${b.provider_id.user_id.first_name || ""} ${b.provider_id.user_id.last_name || ""}`.trim() : "Unknown Provider",
           service_name: b.service_id?.service_name || "Service",
           schedule_formatted: b.schedule?.scheduled_start ? new Date(b.schedule.scheduled_start).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }) : "Pending Schedule",
-          total_amount: b.total_amount,
+          total_amount: b.total_amount || 0,
           currency: b.currency || "LKR",
           payment_status: b.payment?.payment_status ? (b.payment.payment_status === "Successful" ? "Paid" : b.payment.payment_status) : "Unpaid",
           booking_status: b.booking_status,
@@ -173,7 +84,7 @@ export default function AdminBookingsPage() {
         }));
         setBookings(transformed);
 
-        // Update real counts
+        // Update real counts from live data
         const count = (st) => transformed.filter(item => item.booking_status === st).length;
         setStats({
           All: transformed.length,
@@ -185,8 +96,8 @@ export default function AdminBookingsPage() {
           Disputed: count("Disputed")
         });
       }
-    } catch {
-      // If API fails (e.g. unauthenticated / local test), keep mock preview
+    } catch (err) {
+      console.error("Failed to fetch bookings:", err.message);
     } finally {
       setLoading(false);
     }
@@ -199,7 +110,7 @@ export default function AdminBookingsPage() {
   // Client-side filtering for immediate snappy response
   const filteredBookings = bookings.filter(b => {
     if (statFilter !== "All" && b.booking_status !== statFilter) return false;
-    if (paymentFilter && b.payment_status.toLowerCase() !== paymentFilter.toLowerCase()) return false;
+    if (paymentFilter && b.payment_status?.toLowerCase() !== paymentFilter.toLowerCase()) return false;
     if (search.trim()) {
       const q = search.toLowerCase();
       const matchRef = b.booking_reference?.toLowerCase().includes(q);
@@ -252,7 +163,8 @@ export default function AdminBookingsPage() {
             link.download = "marketplace_bookings.csv";
             link.click();
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E7E2DB] text-stone-700 rounded-xl text-sm font-medium hover:bg-stone-50 shadow-xs transition"
+          disabled={filteredBookings.length === 0}
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#E7E2DB] text-stone-700 rounded-xl text-sm font-medium hover:bg-stone-50 shadow-xs transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg className="w-4 h-4 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -325,14 +237,14 @@ export default function AdminBookingsPage() {
 
         <div className="h-6 w-[1px] bg-stone-200 hidden md:block" />
 
-        {/* Payment Dropdown */}
+        {/* Payment Filter */}
         <div className="w-full md:w-auto">
           <select
             value={paymentFilter}
             onChange={(e) => setPaymentFilter(e.target.value)}
-            className="w-full md:w-40 px-3 py-2 bg-stone-50 md:bg-transparent border border-stone-200 md:border-0 rounded-xl text-sm text-stone-700 font-medium focus:outline-none cursor-pointer"
+            className="w-full md:w-44 px-3 py-2 bg-stone-50 md:bg-transparent border border-stone-200 md:border-0 rounded-xl text-sm text-stone-700 font-medium focus:outline-none cursor-pointer"
           >
-            <option value="">All payments</option>
+            <option value="">All payment states</option>
             <option value="Paid">Paid</option>
             <option value="Unpaid">Unpaid</option>
             <option value="Refunded">Refunded</option>
@@ -340,39 +252,42 @@ export default function AdminBookingsPage() {
         </div>
       </div>
 
-      {/* Bookings Table */}
+      {/* Main Bookings Table Card */}
       <div className="bg-white rounded-2xl border border-[#EFEAE3] overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#FAF6F1] border-b border-[#EFEAE3]">
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">REF</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">CUSTOMER</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">PROVIDER</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">SERVICE</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">SCHEDULE</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">AMOUNT</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">PAYMENT</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase">STATUS</th>
-                <th className="py-4 px-5 text-[11px] font-bold tracking-wider text-stone-400 uppercase text-center">ACTIONS</th>
+              <tr className="bg-[#FAF7F2] border-b border-[#EFEAE3] text-stone-500 text-[11px] font-bold uppercase tracking-wider">
+                <th className="py-3.5 px-5">Reference</th>
+                <th className="py-3.5 px-5">Customer</th>
+                <th className="py-3.5 px-5">Provider</th>
+                <th className="py-3.5 px-5">Service</th>
+                <th className="py-3.5 px-5">Schedule</th>
+                <th className="py-3.5 px-5">Total</th>
+                <th className="py-3.5 px-5">Payment</th>
+                <th className="py-3.5 px-5">Status</th>
+                <th className="py-3.5 px-5 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F5F0E8]">
+            <tbody className="divide-y divide-[#F3EFEA]">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-sm text-stone-400 font-medium">
-                    Loading bookings...
+                  <td colSpan={9} className="py-12 text-center text-sm text-stone-500">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-[#EA580C] border-t-transparent rounded-full animate-spin" />
+                      Loading bookings from backend...
+                    </div>
                   </td>
                 </tr>
               ) : filteredBookings.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-sm text-stone-400 font-medium">
-                    No bookings found matching filters.
+                  <td colSpan={9} className="py-12 text-center text-stone-400 text-sm">
+                    No bookings found matching the current filters.
                   </td>
                 </tr>
               ) : (
                 filteredBookings.map((b) => (
-                  <tr key={b._id} className="hover:bg-[#FDFBF9] transition-colors">
+                  <tr key={b._id} className="hover:bg-[#FCFAF8] transition-colors">
                     {/* REF */}
                     <td className="py-4 px-5 font-bold text-stone-900 text-sm whitespace-nowrap">
                       {b.booking_reference}
@@ -451,13 +366,15 @@ export default function AdminBookingsPage() {
               </div>
               <button
                 onClick={() => setSelected(null)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center text-sm font-bold"
+                className="p-1 text-stone-400 hover:text-stone-700 rounded-lg transition"
               >
-                ✕
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 py-5 text-sm">
+            <div className="py-4 grid grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-xs text-stone-400 font-medium">Customer</p>
                 <p className="font-semibold text-stone-800 mt-0.5">{selectedBooking.customer_name}</p>
@@ -514,10 +431,9 @@ export default function AdminBookingsPage() {
                       }
                       setBookings(prev => prev.map(item => item._id === selectedBooking._id ? { ...item, booking_status: newStatus } : item));
                       setSelected(null);
-                    } catch {
-                      alert("Status updated locally (mock)");
-                      setBookings(prev => prev.map(item => item._id === selectedBooking._id ? { ...item, booking_status: newStatus } : item));
-                      setSelected(null);
+                    } catch (err) {
+                      console.error("Status update error:", err.message);
+                      alert("Failed to update status on server.");
                     }
                   }}
                   className="px-4 py-2 bg-[#EA580C] hover:bg-[#C2410C] text-white rounded-xl text-sm font-semibold shadow-xs transition"
