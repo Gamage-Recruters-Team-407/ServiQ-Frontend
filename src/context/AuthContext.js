@@ -1,90 +1,109 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { USER_ROLES } from "@/utils/constants";
+import { authService } from "@/services/authService";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // Default mock user for testing all portals seamlessly
-  const [user, setUser] = useState({
-    id: "usr_mock_customer_01",
-    first_name: "Kamal",
-    last_name: "Perera",
-    email: "kamal.perera@example.com",
-    role: USER_ROLES.CUSTOMER,
-    profile_image: null,
-    account_status: "Active"
-  });
-
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Initialize auth state on mount
   useEffect(() => {
-    // Sync with localStorage if available
-    const storedUser = localStorage.getItem("serviq_user");
-    const storedToken = localStorage.getItem("serviq_token");
-    if (storedUser) {
+    async function initAuth() {
       try {
-        setUser(JSON.parse(storedUser));
+        const storedToken = localStorage.getItem("serviq_token");
+        const storedUser = localStorage.getItem("serviq_user");
+
+        if (storedToken) {
+          setToken(storedToken);
+
+          if (storedUser) {
+            try {
+              setUser(JSON.parse(storedUser));
+            } catch (e) {
+              console.error("Failed to parse stored user", e);
+            }
+          }
+
+          // Verify token against backend
+          try {
+            const res = await authService.getCurrentUser();
+            if (res && res.user) {
+              setUser(res.user);
+              localStorage.setItem("serviq_user", JSON.stringify(res.user));
+            }
+          } catch (err) {
+            // If token expired, clear invalid session
+            if (err?.code === "TOKEN_EXPIRED" || err?.status === 401) {
+              logout();
+            }
+          }
+        }
       } catch (err) {
-        console.error("Failed to parse stored user", err);
+        console.error("Auth init error:", err);
+      } finally {
+        setLoading(false);
       }
     }
-    if (storedToken) setToken(storedToken);
+
+    initAuth();
   }, []);
 
-  const switchRole = (role) => {
-    let mockUser = { ...user, role };
-    if (role === USER_ROLES.PROVIDER) {
-      mockUser = {
-        id: "usr_mock_provider_01",
-        first_name: "Nimal",
-        last_name: "Silva",
-        email: "nimal.silva@services.lk",
-        role: USER_ROLES.PROVIDER,
-        provider_type: "Individual",
-        account_status: "Active",
-        verification_status: "Verified"
-      };
-    } else if (role === USER_ROLES.ADMIN) {
-      mockUser = {
-        id: "usr_mock_admin_01",
-        first_name: "Admin",
-        last_name: "Operator",
-        email: "admin@serviq.lk",
-        role: USER_ROLES.ADMIN,
-        account_status: "Active"
-      };
-    } else {
-      mockUser = {
-        id: "usr_mock_customer_01",
-        first_name: "Kamal",
-        last_name: "Perera",
-        email: "kamal.perera@example.com",
-        role: USER_ROLES.CUSTOMER,
-        account_status: "Active"
-      };
+  // Login handler
+  const login = async (credentials) => {
+    const data = await authService.login(credentials);
+    if (data && data.token && data.user) {
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem("serviq_user", JSON.stringify(data.user));
+      localStorage.setItem("serviq_token", data.token);
     }
-    setUser(mockUser);
-    localStorage.setItem("serviq_user", JSON.stringify(mockUser));
+    return data;
   };
 
-  const login = (userData, jwtToken) => {
-    setUser(userData);
-    setToken(jwtToken);
-    localStorage.setItem("serviq_user", JSON.stringify(userData));
-    localStorage.setItem("serviq_token", jwtToken);
+  // Register handler
+  const register = async (userData) => {
+    const data = await authService.register(userData);
+    if (data && data.token && data.user) {
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem("serviq_user", JSON.stringify(data.user));
+      localStorage.setItem("serviq_token", data.token);
+    }
+    return data;
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("serviq_user");
-    localStorage.removeItem("serviq_token");
+  // Logout handler
+  const logout = async () => {
+    try {
+      await authService.logout().catch(() => {});
+    } finally {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("serviq_user");
+      localStorage.removeItem("serviq_token");
+    }
   };
+
+  const role = user?.user_role || user?.role;
 
   return (
-    <AuthContext.Provider value={{ user, token, role: user?.role, switchRole, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        role,
+        loading,
+        isAuthenticated: !!token && !!user,
+        login,
+        register,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
