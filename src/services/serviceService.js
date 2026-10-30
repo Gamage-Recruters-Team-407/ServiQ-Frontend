@@ -1,4 +1,5 @@
 import { apiClient } from "./api";
+import { toQuery } from "@/utils/query";
 
 export const serviceService = {
   // Discovery & Search
@@ -19,5 +20,11 @@ export const serviceService = {
   getProviderServices: (providerId) => apiClient(`/providers/${providerId}/services`),
   createService: (data) => apiClient("/services", { method: "POST", body: data }),
   updateService: (id, data) => apiClient(`/services/${id}`, { method: "PUT", body: data }),
-  deleteService: (id) => apiClient(`/services/${id}`, { method: "DELETE" })
+  deleteService: (id) => apiClient(`/services/${id}`, { method: "DELETE" }),
+
+    // Admin
+  getAllServicesAdmin: (params = {}) => apiClient(`/services/admin/all${toQuery(params)}`),
+  changeServiceStatus: (id, status) =>
+    apiClient(`/services/${id}/status`, { method: "PATCH", body: { status } }),
+
 };
