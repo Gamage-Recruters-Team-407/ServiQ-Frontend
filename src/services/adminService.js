@@ -45,13 +45,4 @@ export const adminService = {
   // ── Dev 21: Dashboard Summary ───────────────────────────────────────────
   getDashboardSummary: () =>
     apiClient("/admin/dashboard/summary"),
-
-  // ── Dev 21: Platform Settings ───────────────────────────────────────────
-  getPlatformSettings: () =>
-    apiClient("/admin/settings"),
-  updatePlatformSettings: (settingsData) =>
-    apiClient("/admin/settings", {
-      method: "PATCH",
-      body: settingsData
-    }),
 };
