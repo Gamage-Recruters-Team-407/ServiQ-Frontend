@@ -27,5 +27,22 @@ export const adminService = {
   getAuditLogs: (params = {}) => {
     const query = new URLSearchParams(params).toString();
     return apiClient(`/admin/audit-logs${query ? `?${query}` : ""}`);
-  }
+  },
+
+  // ── Dev 21: Booking Management ──────────────────────────────────────────
+  getBookings: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return apiClient(`/admin/bookings${query ? `?${query}` : ""}`);
+  },
+  getBookingById: (bookingId) =>
+    apiClient(`/admin/bookings/${bookingId}`),
+  updateBookingStatus: (bookingId, status, reason) =>
+    apiClient(`/admin/bookings/${bookingId}/status`, {
+      method: "PATCH",
+      body: { status, reason }
+    }),
+
+  // ── Dev 21: Dashboard Summary ───────────────────────────────────────────
+  getDashboardSummary: () =>
+    apiClient("/admin/dashboard/summary"),
 };
