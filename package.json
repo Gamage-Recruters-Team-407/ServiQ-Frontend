@@ -14,15 +14,10 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@tailwindcss/postcss": "^4.3.3",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "postcss": "^8.5.32",
     "tailwindcss": "^4.3.3"
-=======
-    "eslint": "^9",
-    "eslint-config-next": "16.4.3"
->>>>>>> d283a7f (feat: add serviQ developer welcome page)
   }
 }
