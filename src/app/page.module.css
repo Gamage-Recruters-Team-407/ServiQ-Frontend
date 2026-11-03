@@ -772,7 +772,6 @@
   .footerGrid {
     grid-template-columns: 1fr 1fr;
   }
-}
 
   .heroVisual {
     min-height: 370px;

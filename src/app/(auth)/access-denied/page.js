@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { USER_ROLES } from "@/utils/constants";
 
-export default function AccessDeniedPage() {
+function AccessDeniedContent() {
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
   const { user, role, logout } = useAuth();
@@ -79,5 +79,13 @@ export default function AccessDeniedPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AccessDeniedPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AccessDeniedContent />
+    </Suspense>
   );
 }
