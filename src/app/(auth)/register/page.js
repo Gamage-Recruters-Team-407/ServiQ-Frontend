@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { USER_ROLES } from "@/utils/constants";
 import PolicyModal from "@/components/common/PolicyModal";
 
-export default function RegisterPage() {
+function RegisterContent() {
   const router = useRouter();
   const { register } = useAuth();
 
@@ -103,7 +103,6 @@ export default function RegisterPage() {
         }
       }, 700);
     } catch (err) {
-      console.error("Registration error:", err);
       setError(err.message || "Failed to create account. Please try again.");
     } finally {
       setLoading(false);
@@ -111,61 +110,71 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-slate-950 font-sans">
-      {/* Left Hero Column */}
-      <section className="lg:col-span-5 xl:col-span-5 bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950/40 p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden text-white">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-orange-600/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 font-sans bg-white">
+      {/* Left Warm Peach Hero Column */}
+      <section className="lg:col-span-5 xl:col-span-5 bg-gradient-to-br from-[#FFF7ED] via-[#FFEDD5] to-[#FED7AA] p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden text-slate-900">
+        {/* Subtle ambient soft glowing circle */}
+        <div className="absolute top-1/4 right-0 w-80 h-80 bg-orange-300/30 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col h-full justify-between">
           <div>
-            <Link href="/" className="inline-flex items-center gap-3 mb-10 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-600/30 group-hover:scale-105 transition-transform">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                  <polyline points="2 17 12 22 22 17" />
-                  <polyline points="2 12 12 17 22 12" />
-                </svg>
-              </div>
-              <span className="text-2xl font-extrabold tracking-tight text-white">
-                servi<span className="text-orange-500">Q</span>
-              </span>
-            </Link>
-
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-bold tracking-wider uppercase mb-5">
-              AI-POWERED MARKETPLACE
+            {/* Logo */}
+            <div className="mb-10">
+              <Link href="/" className="inline-flex items-center gap-3 group">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-white shadow-md shadow-orange-500/30 group-hover:scale-105 transition-transform">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                    <polyline points="2 17 12 22 22 17" />
+                    <polyline points="2 12 12 17 22 12" />
+                  </svg>
+                </div>
+                <span className="text-2xl font-black tracking-tight text-slate-900">
+                  servi<span className="text-orange-500">Q</span>
+                </span>
+              </Link>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
+            {/* Pill Badge */}
+            <div className="mb-6">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs font-bold tracking-wider uppercase">
+                AI-POWERED MARKETPLACE
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 leading-[1.15] mb-6 tracking-tight">
               Connect with Top<br />
               Verified Local Experts
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-lg mb-8">
+            {/* Subtitle */}
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-md mb-8">
               Book trusted professionals for home repairs, cleaning, plumbing, electrical works, and more at transparent prices.
             </p>
 
-            <div className="space-y-3 mb-8">
-              <div className="flex items-center gap-3 text-sm text-slate-200">
-                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+            {/* Feature List */}
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-3.5 text-sm font-semibold text-slate-900">
+                <div className="w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
                 <span>AI-Assisted smart provider matching</span>
               </div>
 
-              <div className="flex items-center gap-3 text-sm text-slate-200">
-                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-center gap-3.5 text-sm font-semibold text-slate-900">
+                <div className="w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
                 <span>100% verified IDs & background checks</span>
               </div>
 
-              <div className="flex items-center gap-3 text-sm text-slate-200">
-                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-center gap-3.5 text-sm font-semibold text-slate-900">
+                <div className="w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
@@ -180,7 +189,7 @@ export default function RegisterPage() {
       <section className="lg:col-span-7 xl:col-span-7 bg-white p-6 sm:p-12 lg:p-16 flex items-center justify-center">
         <div className="w-full max-w-lg">
           <div className="mb-6">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1.5">
               Create an Account
             </h2>
             <p className="text-sm text-slate-500">
@@ -189,7 +198,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Role Toggle Switch */}
-          <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl mb-6">
+          <div className="grid grid-cols-2 gap-1.5 bg-orange-50/70 border border-orange-100 p-1.5 rounded-2xl mb-6">
             <button
               type="button"
               className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all ${
@@ -304,7 +313,7 @@ export default function RegisterPage() {
 
             <div className="mb-4">
               <label className="block text-xs font-semibold text-slate-800 mb-1.5" htmlFor="phoneNumber">
-                Phone Number (Optional)
+                Phone Number
               </label>
               <div className="relative flex items-center">
                 <span className="absolute left-3.5 text-slate-400">
@@ -374,20 +383,20 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <label className="flex items-start gap-2.5 cursor-pointer mb-5 text-xs text-slate-600 select-none">
+            <label className="flex items-center gap-2.5 cursor-pointer mb-5 text-xs text-slate-600 select-none">
               <input
                 type="checkbox"
                 name="agreeTerms"
                 checked={formData.agreeTerms}
                 onChange={handleChange}
-                className="w-4 h-4 mt-0.5 rounded text-orange-600 focus:ring-orange-500 border-slate-300"
+                className="w-4 h-4 rounded text-orange-600 focus:ring-orange-500 border-slate-300 accent-orange-600"
               />
               <span>
                 I agree to the{" "}
                 <button
                   type="button"
                   onClick={(e) => openPolicy("terms", e)}
-                  className="text-orange-600 font-semibold underline hover:text-orange-700 cursor-pointer"
+                  className="text-orange-600 font-semibold hover:underline cursor-pointer"
                 >
                   Terms of Service
                 </button>{" "}
@@ -395,7 +404,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={(e) => openPolicy("privacy", e)}
-                  className="text-orange-600 font-semibold underline hover:text-orange-700 cursor-pointer"
+                  className="text-orange-600 font-semibold hover:underline cursor-pointer"
                 >
                   Privacy Policy
                 </button>
@@ -405,7 +414,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-11 rounded-xl bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold text-sm shadow-md shadow-orange-600/30 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-sm shadow-md shadow-orange-500/25 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>
@@ -422,7 +431,7 @@ export default function RegisterPage() {
           <div className="grid grid-cols-2 gap-3 mb-6">
             <button
               type="button"
-              className="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors"
+              className="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-sm"
               onClick={() => alert("Google Single Sign-On integration will be enabled in production.")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24">
@@ -436,7 +445,7 @@ export default function RegisterPage() {
 
             <button
               type="button"
-              className="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors"
+              className="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-sm"
               onClick={() => alert("Apple Single Sign-On integration will be enabled in production.")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="#000000">
@@ -462,5 +471,13 @@ export default function RegisterPage() {
         initialTab={policyModalTab}
       />
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }
