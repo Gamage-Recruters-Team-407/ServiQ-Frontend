@@ -38,6 +38,12 @@ export async function apiClient(endpoint, options = {}) {
 
     return data;
   } catch (error) {
+    if (error.name === "TypeError" || (error.message && error.message.toLowerCase().includes("fetch"))) {
+      const connError = new Error("Unable to connect to the backend server. Please make sure the backend is running on http://localhost:5000.");
+      connError.code = "CONNECTION_REFUSED";
+      console.error(`API Connection Error [${method} ${endpoint}]:`, connError);
+      throw connError;
+    }
     console.error(`API Error [${method} ${endpoint}]:`, error);
     throw error;
   }
