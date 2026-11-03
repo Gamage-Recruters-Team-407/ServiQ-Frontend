@@ -765,12 +765,7 @@
 
   .hero h1 {
     font-size: clamp(44px, 6vw, 60px);
-  }
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .footerGrid {
-    grid-template-columns: 1fr 1fr;
+
   }
 
   .heroVisual {
