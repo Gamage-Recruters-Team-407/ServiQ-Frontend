@@ -95,13 +95,13 @@ export default function RegisterPage() {
       setTimeout(() => {
         const userRole = response?.user?.user_role || selectedRole;
         if (userRole === USER_ROLES.PROVIDER) {
-          window.location.href = "/provider/dashboard";
+          router.push("/provider/dashboard");
         } else if (userRole === USER_ROLES.ADMIN) {
-          window.location.href = "/admin/dashboard";
+          router.push("/admin/dashboard");
         } else {
-          window.location.href = "/customer/dashboard";
+          router.push("/customer/dashboard");
         }
-      }, 500);
+      }, 700);
     } catch (err) {
       console.error("Registration error:", err);
       setError(err.message || "Failed to create account. Please try again.");
@@ -111,83 +111,73 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 font-sans">
-      {/* Left Warm Peach Hero Column */}
-      <section className="lg:col-span-5 xl:col-span-5 bg-gradient-to-br from-[#FFF7ED] via-[#FFEDD5] to-[#FED7AA] p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden text-slate-900">
-          {/* Subtle soft warm glowing ambient circle */}
-          <div className="absolute top-1/4 right-0 w-80 h-80 bg-orange-300/30 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-slate-950 font-sans">
+      {/* Left Hero Column */}
+      <section className="lg:col-span-5 xl:col-span-5 bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950/40 p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden text-white">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-orange-600/15 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col h-full justify-between">
-            <div>
-              {/* Logo */}
-              <div className="mb-10">
-                <Link href="/" className="inline-flex items-center gap-3 group">
-                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-white shadow-md shadow-orange-500/30 group-hover:scale-105 transition-transform">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                      <polyline points="2 17 12 22 22 17" />
-                      <polyline points="2 12 12 17 22 12" />
-                    </svg>
-                  </div>
-                  <span className="text-2xl font-black tracking-tight text-slate-900">
-                    servi<span className="text-orange-500">Q</span>
-                  </span>
-                </Link>
+        <div className="relative z-10 flex flex-col h-full justify-between">
+          <div>
+            <Link href="/" className="inline-flex items-center gap-3 mb-10 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-600/30 group-hover:scale-105 transition-transform">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                  <polyline points="2 17 12 22 22 17" />
+                  <polyline points="2 12 12 17 22 12" />
+                </svg>
+              </div>
+              <span className="text-2xl font-extrabold tracking-tight text-white">
+                servi<span className="text-orange-500">Q</span>
+              </span>
+            </Link>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-bold tracking-wider uppercase mb-5">
+              AI-POWERED MARKETPLACE
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
+              Connect with Top<br />
+              Verified Local Experts
+            </h1>
+
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-lg mb-8">
+              Book trusted professionals for home repairs, cleaning, plumbing, electrical works, and more at transparent prices.
+            </p>
+
+            <div className="space-y-3 mb-8">
+              <div className="flex items-center gap-3 text-sm text-slate-200">
+                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <span>AI-Assisted smart provider matching</span>
               </div>
 
-              {/* Tag / Badge */}
-              <div className="mb-6">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs font-bold tracking-wider uppercase">
-                  AI-POWERED MARKETPLACE
-                </span>
+              <div className="flex items-center gap-3 text-sm text-slate-200">
+                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <span>100% verified IDs & background checks</span>
               </div>
 
-              {/* Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 leading-[1.15] mb-6 tracking-tight">
-                Connect with Top<br />
-                Verified Local Experts
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-md mb-8">
-                Book trusted professionals for home repairs, cleaning, plumbing, electrical works, and more at transparent prices.
-              </p>
-
-              {/* Feature Checklist */}
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3 text-sm text-slate-800 font-medium">
-                  <div className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm shadow-orange-500/30">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span>AI-Assisted smart provider matching</span>
+              <div className="flex items-center gap-3 text-sm text-slate-200">
+                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
-
-                <div className="flex items-center gap-3 text-sm text-slate-800 font-medium">
-                  <div className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm shadow-orange-500/30">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span>100% verified IDs & background checks</span>
-                </div>
-
-                <div className="flex items-center gap-3 text-sm text-slate-800 font-medium">
-                  <div className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm shadow-orange-500/30">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span>Transparent fixed pricing & secure escrows</span>
-                </div>
+                <span>Transparent fixed pricing & secure escrows</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Right Form Column */}
-        <section className="lg:col-span-7 xl:col-span-7 bg-white p-8 sm:p-12 lg:p-16 flex items-center justify-center">
+      {/* Right Form Column */}
+      <section className="lg:col-span-7 xl:col-span-7 bg-white p-6 sm:p-12 lg:p-16 flex items-center justify-center">
         <div className="w-full max-w-lg">
           <div className="mb-6">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
