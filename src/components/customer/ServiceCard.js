@@ -18,13 +18,13 @@ export default function ServiceCard({ service }) {
     <Link href={`/services/${service._id}`} className={ui.cardLink}>
       {cat?.name && <span className={ui.chip}>{cat.name}</span>}
       <h3 className="mb-1.5 mt-2.5 text-lg font-semibold">{service.name}</h3>
-      <p className="mb-2 line-clamp-2 text-sm text-muted">{service.description}</p>
+      <p className="mb-2 line-clamp-2 text-sm text-slate-500">{service.description}</p>
       {service.coverage?.coverage_area && (
-        <p className="mb-3 text-xs text-muted">📍 {service.coverage.coverage_area}</p>
+        <p className="mb-3 text-xs text-slate-500">📍 {service.coverage.coverage_area}</p>
       )}
       <div className="flex items-center justify-between">
         <span className="font-bold">{formatPrice(service.price)}</span>
-        <span className="text-primary">View →</span>
+        <span className="text-orange-500">View →</span>
       </div>
     </Link>
   );
