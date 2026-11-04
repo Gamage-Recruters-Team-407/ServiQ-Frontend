@@ -10,10 +10,10 @@ import FormDialog from "./FormDialog";
 
 const smBtn = ui.btnSm;
 
-function Stat({ label, value, tone = "text-ink" }) {
+function Stat({ label, value, tone = "text-slate-900" }) {
   return (
     <div className={ui.stat}>
-      <div className="text-xs font-semibold uppercase tracking-wide text-muted">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</div>
       <div className={`mt-1 text-2xl font-bold ${tone}`}>{value}</div>
     </div>
   );
@@ -75,8 +75,8 @@ export default function CategoryManager() {
     <div>
       <div className="mb-5 grid gap-3 sm:grid-cols-3">
         <Stat label="Total categories" value={categories.length} />
-        <Stat label="Active" value={activeCount} tone="text-success" />
-        <Stat label="Inactive" value={categories.length - activeCount} tone="text-muted" />
+        <Stat label="Active" value={activeCount} tone="text-green-700" />
+        <Stat label="Inactive" value={categories.length - activeCount} tone="text-slate-500" />
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -103,7 +103,7 @@ export default function CategoryManager() {
       {notice && <div className={ui.alertSuccess} role="status">{notice}</div>}
       {(error || actionError) && <div className={ui.alertError} role="alert">{error || actionError}</div>}
 
-      <div className="overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -116,27 +116,27 @@ export default function CategoryManager() {
             </thead>
             <tbody className="[&>tr:last-child>td]:border-b-0">
               {loading && (
-                <tr><td colSpan={4} className={`${ui.td} py-10 text-center text-muted`}>Loading categories…</td></tr>
+                <tr><td colSpan={4} className={`${ui.td} py-10 text-center text-slate-500`}>Loading categories…</td></tr>
               )}
               {!loading && visible.length === 0 && (
-                <tr><td colSpan={4} className={`${ui.td} py-10 text-center text-muted`}>No categories found.</td></tr>
+                <tr><td colSpan={4} className={`${ui.td} py-10 text-center text-slate-500`}>No categories found.</td></tr>
               )}
               {visible.map((c) => {
                 const isChild = Boolean(c.parent_category_id);
                 return (
                   <tr key={c._id} className={ui.tr}>
                     <td className={ui.td}>
-                     <div className={`flex items-center gap-3 ${isChild ? "ml-5 border-l-2 border-accent pl-3" : ""}`}>
-                        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-surface text-lg">
+                     <div className={`flex items-center gap-3 ${isChild ? "ml-5 border-l-2 border-orange-300 pl-3" : ""}`}>
+                        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-orange-50 text-lg">
                           <CategoryIcon category={c} />
                         </div>
                         <div className="min-w-0">
                           <div className="truncate font-semibold">{c.name}</div>
-                          <div className="truncate text-xs text-muted">/{c.slug}</div>
+                          <div className="truncate text-xs text-slate-500">/{c.slug}</div>
                         </div>
                       </div>
                     </td>
-                    <td className={`${ui.td} text-muted`}>
+                    <td className={`${ui.td} text-slate-500`}>
                       {nameById[c.parent_category_id] ? (
                         <span className={ui.chip}>{nameById[c.parent_category_id]}</span>
                       ) : "—"}
