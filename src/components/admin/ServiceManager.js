@@ -85,8 +85,8 @@ export default function ServiceManager() {
       </form>
 
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm text-muted">
-          <span className="font-semibold text-ink">{services.meta?.total ?? 0}</span> services
+        <p className="text-sm text-slate-500">
+          <span className="font-semibold text-slate-900">{services.meta?.total ?? 0}</span> services
         </p>
         <button className={ui.btnPrimary} onClick={() => setEditing({})}>+ New service</button>
       </div>
@@ -96,7 +96,7 @@ export default function ServiceManager() {
         <div className={ui.alertError} role="alert">{services.error || actionError}</div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -110,16 +110,16 @@ export default function ServiceManager() {
             </thead>
             <tbody className="[&>tr:last-child>td]:border-b-0">
               {services.loading && (
-                <tr><td colSpan={5} className={`${ui.td} py-10 text-center text-muted`}>Loading services…</td></tr>
+                <tr><td colSpan={5} className={`${ui.td} py-10 text-center text-slate-500`}>Loading services…</td></tr>
               )}
               {!services.loading && items.length === 0 && (
-                <tr><td colSpan={5} className={`${ui.td} py-10 text-center text-muted`}>No services found.</td></tr>
+                <tr><td colSpan={5} className={`${ui.td} py-10 text-center text-slate-500`}>No services found.</td></tr>
               )}
               {items.map((s) => (
                 <tr key={s._id} className={ui.tr}>
                   <td className={ui.td}>
                     <div className="font-semibold">{s.name}</div>
-                    <div className="text-xs text-muted">
+                    <div className="text-xs text-slate-500">
                       {s.coverage?.coverage_area ? `${s.coverage.coverage_area} · ` : ""}
                       Provider …{String(s.provider_id).slice(-6)}
                     </div>
@@ -133,10 +133,7 @@ export default function ServiceManager() {
                     <div className="flex flex-wrap items-center justify-end gap-1.5">
                       <button className={`${ui.btnOutline} ${ui.btnSm}`} onClick={() => setEditing(s)}>Edit</button>
                       <select
-                        className={`${ui.input} w-auto! py-1.5! text-sm`}
-                        value=""
-                        onChange={(e) => changeStatus(s, e.target.value)}
-                        aria-label={`Change status of ${s.name}`}
+                        className="w-44 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200"
                       >
                         <option value="">Change status…</option>
                         {(SERVICE_STATUS_TRANSITIONS[s.status] || []).map((st) => (
