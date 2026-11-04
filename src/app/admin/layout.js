@@ -1,24 +1,17 @@
-import Link from "next/link";
+import AdminNavigation from "@/components/admin/AdminNavigation";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="portal-layout">
-      <aside className="portal-sidebar">
-        <div className="portal-sidebar-title">Platform Administration (SRS §23)</div>
-        <nav style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <Link href="/admin/dashboard" className="portal-nav-link">Analytics Dashboard</Link>
-          <Link href="/admin/users" className="portal-nav-link">User & Provider Accounts</Link>
-          <Link href="/admin/categories" className="portal-nav-link">Service Categories</Link>
-          <Link href="/admin/bookings" className="portal-nav-link">Booking Monitoring</Link>
-          <Link href="/admin/payments" className="portal-nav-link">Payment Transactions</Link>
-          <Link href="/admin/commissions" className="portal-nav-link">Commission Rules</Link>
-          <Link href="/admin/payouts" className="portal-nav-link">Payout Approvals</Link>
-          <Link href="/admin/disputes" className="portal-nav-link">Dispute Resolution</Link>
-          <Link href="/admin/ai-monitoring" className="portal-nav-link">AI Monitoring</Link>
-          <Link href="/admin/audit-logs" className="portal-nav-link">Audit & Activity Logs</Link>
-        </nav>
+    <div className="flex min-h-[calc(100vh-72px)] max-[760px]:flex-col">
+      <aside className="flex w-[260px] shrink-0 flex-col gap-2 border-r border-line bg-white px-4 py-6 max-[760px]:w-full max-[760px]:p-4">
+        <div className="px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-muted">
+          Platform Administration (SRS §23)
+        </div>
+        <AdminNavigation />
       </aside>
-      <main className="portal-main">{children}</main>
+      <main className="min-w-0 flex-1 overflow-y-auto bg-surface p-8 text-ink max-[760px]:p-4 [&_.portal-subtitle]:mt-1 [&_.portal-subtitle]:text-[0.95rem] [&_.portal-subtitle]:text-muted">
+        {children}
+      </main>
     </div>
   );
 }
