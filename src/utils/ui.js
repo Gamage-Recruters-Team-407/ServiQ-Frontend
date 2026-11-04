@@ -1,64 +1,51 @@
-// const btn = "inline-flex items-center justify-center rounded-lg px-[18px] py-2.5 font-semibold transition disabled:cursor-not-allowed";
+// Tailwind (default palette) class presets for the catalogue module.
+// Orange = brand, slate = text/borders. No custom theme tokens needed.
 
-// export const ui = {
-//   wrap: "mx-auto w-full max-w-6xl px-5",
-//   head: "border-b border-line bg-surface py-9",
-//   h1: "text-3xl font-bold leading-tight",
-//   h2: "mb-3.5 text-xl font-semibold",
-//   card: "rounded-xl border border-line bg-white p-5 shadow-sm",
-//   cardLink: "block rounded-xl border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary",
-//   grid: "grid gap-[18px] grid-cols-[repeat(auto-fill,minmax(260px,1fr))]",
-//   btnPrimary: `${btn} bg-primary text-white hover:bg-primary-dark disabled:bg-accent`,
-//   btnOutline: `${btn} border border-line bg-white text-ink hover:border-primary hover:text-primary`,
-//   btnSm: "!px-3 !py-1.5 text-sm",
-//   input: "w-full rounded-lg border border-line bg-white px-3 py-2.5 text-ink focus:border-primary focus:outline-2 focus:outline-accent",
-//   label: "mb-1.5 block text-sm font-semibold",
-//   hint: "mt-1 text-xs text-muted",
-//   fieldError: "mt-1 text-xs text-danger",
-//   chip: "inline-block rounded-full bg-surface px-2.5 py-0.5 text-xs font-medium text-primary-dark",
-//   empty: "rounded-xl border border-dashed border-accent bg-surface px-5 py-14 text-center",
-//   alertError: "mb-3.5 rounded-lg bg-red-100 px-3.5 py-3 text-sm text-danger",
-//   alertInfo: "mb-3.5 rounded-lg bg-info px-3.5 py-3 text-sm",
-//   alertSuccess: "mb-3.5 rounded-lg bg-green-100 px-3.5 py-3 text-sm text-success",
-//   th: "border-b border-line bg-surface px-3.5 py-3 text-left text-sm font-semibold",
-//   td: "border-b border-line px-3.5 py-3 text-sm",
-// };
+const btnBase =
+  "inline-flex items-center justify-center gap-2 rounded-lg border-solid px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-60";
 
-// Reusable Tailwind class presets. Colors come from @theme in src/styles/globals.css.
-const btn =
-  "inline-flex items-center justify-center gap-1.5 rounded-lg px-[18px] py-2.5 font-semibold transition disabled:cursor-not-allowed";
+const card = "rounded-2xl border border-slate-200 bg-white p-5 shadow-sm";
 
-export const ui = {
-  wrap: "mx-auto w-full max-w-6xl px-5",
-  head: "border-b border-line bg-linear-to-r from-surface to-white py-9",
-  h1: "text-3xl font-bold leading-tight tracking-tight",
-  h2: "mb-3.5 text-xl font-semibold",
-  card: "rounded-xl border border-line bg-white p-5 shadow-sm",
-  cardLink:
-    "block rounded-xl border border-line bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary hover:shadow-md",
-  grid: "grid gap-[18px] grid-cols-[repeat(auto-fill,minmax(260px,1fr))]",
+const ui = {
+  // layout
+  wrap: "mx-auto w-full max-w-6xl px-4 py-8 sm:px-6",
+  head: "mb-8 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-8 text-white shadow-lg shadow-orange-500/20",
+  grid: "grid gap-5 sm:grid-cols-2 lg:grid-cols-3",
 
-  btnPrimary: `${btn} bg-primary text-white shadow-sm hover:bg-primary-dark disabled:bg-accent`,
-  btnOutline: `${btn} border border-line bg-white text-ink hover:border-primary hover:text-primary`,
-  btnDanger: `${btn} border border-red-200 bg-white text-danger hover:bg-red-50`,
-  btnSuccess: `${btn} border border-green-200 bg-white text-success hover:bg-green-50`,
-  btnSm: "px-3! py-1.5! text-sm",
+  // cards
+  card,
+  cardLink: `${card} block transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-md`,
+  stat: "rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
 
+  // buttons
+  btnPrimary: `${btnBase} bg-orange-500 text-white shadow-sm hover:bg-orange-600`,
+  btnOutline: `${btnBase} border border-slate-200 bg-white text-slate-900 hover:border-orange-300 hover:bg-orange-50`,
+  btnDanger: `${btnBase} border border-red-200 bg-white text-red-600 hover:bg-red-50`,
+  btnSuccess: `${btnBase} border border-green-200 bg-white text-green-700 hover:bg-green-50`,
+  btnSm: "!px-3 !py-1.5 px-3! py-1.5!",
+
+  // form
   input:
-    "w-full rounded-lg border border-line bg-white px-3 py-2.5 text-ink placeholder:text-slate-400 focus:border-primary focus:outline-2 focus:outline-accent",
-  label: "mb-1.5 block text-sm font-semibold",
-  hint: "mt-1 text-xs text-muted",
-  fieldError: "mt-1 text-xs text-danger",
-  chip: "inline-block rounded-full bg-surface px-2.5 py-0.5 text-xs font-medium text-primary-dark",
-  empty: "rounded-xl border border-dashed border-accent bg-surface px-5 py-14 text-center",
+    "w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200",
+  label: "mb-1.5 block text-sm font-semibold text-slate-900",
+  hint: "mt-1 text-xs text-slate-500",
+  fieldError: "mt-1 text-xs font-medium text-red-600",
 
-  alertError: "mb-3.5 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-sm text-danger",
-  alertInfo: "mb-3.5 rounded-lg bg-info px-3.5 py-3 text-sm",
-  alertSuccess: "mb-3.5 rounded-lg border border-green-200 bg-green-50 px-3.5 py-3 text-sm text-success",
+  // misc
+  chip: "inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700",
+  empty:
+    "rounded-2xl border border-dashed border-orange-300 bg-orange-50 px-6 py-12 text-center text-slate-500",
 
-  // tables
-  th: "whitespace-nowrap border-b border-line bg-surface px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted",
-  td: "border-b border-line px-4 py-3.5 align-middle text-sm",
-  tr: "transition hover:bg-surface/60",
-  stat: "rounded-xl border border-line bg-white p-4 shadow-sm",
+  // alerts
+  alertError: "rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700",
+  alertInfo: "rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800",
+  alertSuccess: "rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800",
+
+  // table
+  th: "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500",
+  td: "px-4 py-3 align-middle text-sm text-slate-900",
+  tr: "border-b border-slate-200 last:border-0 hover:bg-orange-50/50",
 };
+
+export { ui };
+export default ui;
