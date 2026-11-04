@@ -1,111 +1,84 @@
-import React from "react";
 import Link from "next/link";
+
+const footerGroups = [
+  {
+    title: "Explore Services",
+    links: [
+      { label: "All Services", href: "/services" },
+      { label: "Compare Services", href: "/services/compare" },
+    ],
+  },
+  {
+    title: "For Providers",
+    links: [
+      { label: "Become a Provider", href: "/register" },
+      { label: "Provider Dashboard", href: "/provider/dashboard" },
+    ],
+  },
+];
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "var(--bg-secondary)",
-        borderTop: "1px solid var(--border-subtle)",
-        padding: "4rem 0 2rem",
-        marginTop: "auto"
-      }}
-    >
-      <div className="container">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "2.5rem",
-            marginBottom: "3rem"
-          }}
-        >
+    <footer className="mt-auto w-full border-t border-slate-200 bg-white">
+      <div className="mx-auto w-full max-w-[1600px] px-5 py-7 sm:px-8">
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "8px",
-                  background: "var(--brand-gradient)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1rem"
-                }}
-              >
-                S
-              </div>
-              <span style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem", fontWeight: 800 }}>
-                ServiQ
-              </span>
-            </div>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              AI-Powered Local Services Marketplace connecting verified professionals with customers across Sri Lanka with transparent pricing, instant booking, and secure escrow payments.
+            <Link
+              href="/"
+              className="text-2xl font-extrabold tracking-tight text-slate-900"
+            >
+              Servi<span className="text-orange-500">Q</span>
+            </Link>
+
+            <p className="mt-3 max-w-xs text-sm leading-6 text-slate-500">
+              Connecting customers with trusted service professionals. Discover,
+              compare and book services with confidence.
             </p>
           </div>
 
-          <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              Explore Services
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/services?category=Home+Repairs" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Home Repairs & Maintenance</Link></li>
-              <li><Link href="/services?category=Electrical" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Electrical Services</Link></li>
-              <li><Link href="/services?category=Plumbing" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Plumbing & Sanitation</Link></li>
-              <li><Link href="/services?category=Cleaning" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Deep Cleaning & Janitorial</Link></li>
-              <li><Link href="/services/compare" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Comparison</Link></li>
-            </ul>
-          </div>
+          {footerGroups.map((group) => (
+            <div key={group.title}>
+              <h3 className="text-sm font-bold text-slate-900">
+                {group.title}
+              </h3>
+
+              <ul className="mt-3 space-y-2">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-slate-500 transition-colors hover:text-orange-600"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              For Providers
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/register?role=provider" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Become a Service Provider</Link></li>
-              <li><Link href="/provider/dashboard" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Portal</Link></li>
-              <li><Link href="/provider/earnings" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Earnings & Payouts</Link></li>
-              <li><Link href="/provider/availability" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Calendar & Scheduling</Link></li>
-            </ul>
-          </div>
+            <h3 className="text-sm font-bold text-slate-900">
+              Why Choose ServiQ?
+            </h3>
 
-          <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              Platform & Trust
-            </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🛡️ Identity Verified Providers</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🔒 Escrow Payment Protection</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>⚖️ Structured Dispute Resolution</span></li>
-              <li><Link href="/admin/dashboard" style={{ color: "var(--brand-primary)", fontSize: "0.9rem" }}>Platform Administration</Link></li>
+            <ul className="mt-3 space-y-3">
+              <li className="text-sm text-slate-500">
+                🛡️ Identity Verified Providers
+              </li>
+              <li className="text-sm text-slate-500">
+                🔒 Escrow Payment Protection
+              </li>
+              <li className="text-sm text-slate-500">
+                ⚖️ Structured Dispute Resolution
+              </li>
             </ul>
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border-subtle)",
-            paddingTop: "1.5rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "1rem",
-            fontSize: "0.85rem",
-            color: "var(--text-muted)"
-          }}
-        >
-          <div>
-            © 2026 Gamage Recruiters (Pvt) Ltd. All rights reserved. ServiQ Marketplace SRS v1.0.
-          </div>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Dispute Policies</span>
-          </div>
+        <div className="mt-7 flex flex-col gap-2 border-t border-slate-100 pt-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} ServiQ. All rights reserved.</p>
+          <p>Made for better service experiences.</p>
         </div>
       </div>
     </footer>

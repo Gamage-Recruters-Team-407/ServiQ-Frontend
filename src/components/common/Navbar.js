@@ -1,197 +1,217 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useNotifications } from "@/context/NotificationContext";
-import { USER_ROLES } from "@/utils/constants";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user, role, switchRole } = useAuth();
-  const { unreadCount, setIsOpen } = useNotifications();
-
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const getDashboardLink = () => {
-    if (role === USER_ROLES.ADMIN) return "/admin/dashboard";
-    if (role === USER_ROLES.PROVIDER) return "/provider/dashboard";
-    return "/customer/dashboard";
+  const { user, role } = useAuth();
+  const { setIsOpen } = useNotifications();
+
+  const currentRole = String(
+    role || user?.user_role || user?.role || "",
+  ).toUpperCase();
+
+  const roleLabels = {
+    ADMIN: "Administrator",
+    ADMINISTRATOR: "Administrator",
+    CUSTOMER: "Customer",
+    PROVIDER: "Service Provider",
+    "SERVICE PROVIDER": "Service Provider",
   };
 
-  const isActive = (path) => {
-    if (path === "/services") {
-      return pathname === "/services";
-    }
-    return pathname.startsWith(path);
+  const dashboardPaths = {
+    ADMIN: "/admin/dashboard",
+    ADMINISTRATOR: "/admin/dashboard",
+    CUSTOMER: "/customer/dashboard",
+    PROVIDER: "/provider/dashboard",
+    "SERVICE PROVIDER": "/provider/dashboard",
   };
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  const dashboardPath = dashboardPaths[currentRole] || "/dashboard";
+
+  const isServicesActive = pathname === "/services";
+  const isCompareActive = pathname.startsWith("/services/compare");
+  const isDashboardActive = pathname.startsWith(dashboardPath);
+
+  const closeMenu = () => setMobileMenuOpen(false);
+
+  const linkStyle = (active) =>
+    `rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+      active
+        ? "bg-orange-50 text-orange-600"
+        : "text-slate-600 hover:bg-slate-50 hover:text-orange-600"
+    }`;
 
   return (
-    <header className="navbar">
-      <div className="navbar-container">
-        {/* Brand Logo */}
-        <Link href="/" className="navbar-brand" onClick={closeMobileMenu}>
-          <div className="navbar-logo-icon">S</div>
-
-          <div className="navbar-brand-content">
-            <span className="navbar-brand-name">
-              Servi<span>Q</span>
-            </span>
-            <span className="navbar-brand-tagline">AI Marketplace</span>
-          </div>
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+      <div className="mx-auto flex min-h-[68px] w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center gap-2">
+          <span className="text-2xl font-extrabold tracking-tight text-slate-900">
+            Servi<span className="text-orange-500">Q</span>
+          </span>
         </Link>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          type="button"
-          className="navbar-mobile-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          <span className={mobileMenuOpen ? "open" : ""}></span>
-          <span className={mobileMenuOpen ? "open" : ""}></span>
-          <span className={mobileMenuOpen ? "open" : ""}></span>
-        </button>
-
-        {/* Navigation + Actions */}
-        <div
-          className={`navbar-content ${
-            mobileMenuOpen ? "navbar-content-open" : ""
-          }`}
-        >
-          {/* Navigation Links */}
-          <nav className="navbar-navigation">
-            <Link
-              href="/services"
-              onClick={closeMobileMenu}
-              className={`navbar-link ${isActive("/services") ? "active" : ""}`}
-            >
-              Services
+        <div className="hidden flex-1 items-center justify-between gap-4 md:flex">
+          <nav className="flex items-center gap-2">
+            <Link href="/services" className={linkStyle(isServicesActive)}>
+              Explore Services
             </Link>
 
             <Link
               href="/services/compare"
-              onClick={closeMobileMenu}
-              className={`navbar-link ${
-                pathname.startsWith("/services/compare") ? "active" : ""
-              }`}
+              className={linkStyle(isCompareActive)}
             >
-              Compare Providers
+              Compare Services
             </Link>
 
-            <Link
-              href={getDashboardLink()}
-              onClick={closeMobileMenu}
-              className={`navbar-link ${
-                pathname.includes("/dashboard") ? "active" : ""
-              }`}
-            >
-              Dashboard
-            </Link>
+            {user && (
+              <Link
+                href={dashboardPath}
+                className={linkStyle(isDashboardActive)}
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
 
-          {/* Right Actions */}
-          <div className="navbar-actions">
-            {/* Role Switcher */}
-            <div className="navbar-role-wrapper">
-              <button
-                type="button"
-                className={`navbar-role-button ${roleMenuOpen ? "active" : ""}`}
-                onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                aria-expanded={roleMenuOpen}
-              >
-                <span className="navbar-role-label">View as:</span>
-                <strong>{role}</strong>
-                <span
-                  className={`navbar-role-arrow ${
-                    roleMenuOpen ? "rotated" : ""
-                  }`}
-                >
-                  ▾
-                </span>
-              </button>
-
-              {roleMenuOpen && (
-                <div className="navbar-role-dropdown">
-                  <p className="navbar-dropdown-heading">Switch Test Role</p>
-
-                  {Object.values(USER_ROLES).map((r) => (
-                    <button
-                      type="button"
-                      key={r}
-                      className={`navbar-role-option ${
-                        role === r ? "selected" : ""
-                      }`}
-                      onClick={() => {
-                        switchRole(r);
-                        setRoleMenuOpen(false);
-                      }}
-                    >
-                      <span>{r}</span>
-                      {role === r && <span>✓</span>}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Notifications */}
-            <button
-              type="button"
-              className="navbar-notification"
-              onClick={() => setIsOpen(true)}
-              aria-label={`Notifications, ${unreadCount} unread`}
-            >
-              <span className="navbar-bell">♧</span>
-
-              {unreadCount > 0 && (
-                <span className="navbar-notification-badge">
-                  {unreadCount > 99 ? "99+" : unreadCount}
-                </span>
-              )}
-            </button>
-
-            {/* Authentication */}
+          <div className="flex shrink-0 items-center gap-3">
             {user ? (
-              <Link
-                href={getDashboardLink()}
-                className="navbar-user-profile"
-                onClick={closeMobileMenu}
-              >
-                <span className="navbar-user-avatar">
-                  {user.first_name?.[0] || "U"}
+              <>
+                <span className="hidden rounded-full bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-600 lg:inline-flex">
+                  {roleLabels[currentRole] || "User"}
                 </span>
-                <span className="navbar-user-name">{user.first_name}</span>
-              </Link>
+
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
+                  aria-label="Open notifications"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-lg transition-colors hover:border-orange-200 hover:bg-orange-50"
+                >
+                  🔔
+                </button>
+
+                <Link
+                  href="/profile"
+                  className="rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-orange-600"
+                >
+                  My Profile
+                </Link>
+              </>
             ) : (
-              <div className="navbar-auth-buttons">
+              <>
                 <Link
                   href="/login"
-                  className="btn btn-secondary btn-sm"
-                  onClick={closeMobileMenu}
+                  className="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 transition-colors hover:bg-slate-50 hover:text-orange-600"
                 >
                   Sign In
                 </Link>
 
                 <Link
                   href="/register"
-                  className="btn btn-primary btn-sm"
-                  onClick={closeMobileMenu}
+                  className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-orange-600"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-xl text-slate-700 transition-colors hover:bg-slate-50 md:hidden"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? "✕" : "☰"}
+        </button>
+      </div>
+
+      {mobileMenuOpen && (
+        <div className="border-t border-slate-100 bg-white px-4 py-4 shadow-lg md:hidden">
+          <nav className="flex flex-col gap-2">
+            <Link
+              href="/services"
+              onClick={closeMenu}
+              className={linkStyle(isServicesActive)}
+            >
+              Explore Services
+            </Link>
+
+            <Link
+              href="/services/compare"
+              onClick={closeMenu}
+              className={linkStyle(isCompareActive)}
+            >
+              Compare Services
+            </Link>
+
+            {user && (
+              <>
+                <Link
+                  href={dashboardPath}
+                  onClick={closeMenu}
+                  className={linkStyle(isDashboardActive)}
+                >
+                  Dashboard
+                </Link>
+
+                <div className="my-2 border-t border-slate-100" />
+
+                <p className="px-3 text-xs font-semibold text-slate-400">
+                  {roleLabels[currentRole] || "User"}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(true);
+                    closeMenu();
+                  }}
+                  className="rounded-lg px-3 py-2 text-left text-sm font-semibold text-slate-600 hover:bg-orange-50 hover:text-orange-600"
+                >
+                  🔔 Notifications
+                </button>
+
+                <Link
+                  href="/profile"
+                  onClick={closeMenu}
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-orange-50 hover:text-orange-600"
+                >
+                  My Profile
+                </Link>
+              </>
+            )}
+
+            {!user && (
+              <div className="flex flex-col gap-2 pt-2">
+                <Link
+                  href="/login"
+                  onClick={closeMenu}
+                  className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-700"
+                >
+                  Sign In
+                </Link>
+
+                <Link
+                  href="/register"
+                  onClick={closeMenu}
+                  className="rounded-xl bg-orange-500 px-4 py-3 text-center text-sm font-bold text-white"
                 >
                   Get Started
                 </Link>
               </div>
             )}
-          </div>
+          </nav>
         </div>
-      </div>
+      )}
     </header>
   );
 }
