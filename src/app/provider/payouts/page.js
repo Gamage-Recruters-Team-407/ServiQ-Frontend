@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Payout Requests & History' description='Manage payout requests, bank details and settlement history.' action='Request payout' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['PO-2104', 'Available balance', 'LKR 24,500', 'Pending'], ['PO-2103', 'Bank transfer · Sampath Bank', 'LKR 48,000', 'Completed'], ['PO-2102', 'Bank transfer · Commercial Bank', 'LKR 12,800', 'Completed']]}/>;}

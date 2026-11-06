@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='My Bookings' description='Track upcoming appointments, completed jobs and booking history.' action='Book a service' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['BK-3048', 'Home cleaning · Nimal Silva', 'Today · 10:30 AM', 'Confirmed'], ['BK-3047', 'AC maintenance · CoolCare', 'Nov 08 · 2:00 PM', 'Pending'], ['BK-3046', 'Plumbing repair · Kasun Perera', 'Nov 04 · 9:00 AM', 'Completed']]}/>;}

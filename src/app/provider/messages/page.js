@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Customer Messages' description='Coordinate appointments and respond to customer questions.' action='New message' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['MSG-301', 'Kamal Perera · Electrical repair', 'Today, 9:15 AM', 'Active'], ['MSG-300', 'Amaya Silva · Fan installation', 'Yesterday, 5:10 PM', 'Active']]}/>;}

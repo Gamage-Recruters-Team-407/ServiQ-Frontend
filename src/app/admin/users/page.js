@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='User & Provider Accounts' description='Manage marketplace users, provider verification and account permissions.' action='Review account' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['USR-1024', 'Kamal Perera', 'Nov 06, 2026', 'Active'], ['PRV-0842', 'Nimal Silva', 'Nov 06, 2026', 'Verified'], ['USR-1023', 'Amaya Fernando', 'Nov 05, 2026', 'Pending review'], ['PRV-0841', 'CoolCare Services', 'Nov 04, 2026', 'Active']]}/>;}

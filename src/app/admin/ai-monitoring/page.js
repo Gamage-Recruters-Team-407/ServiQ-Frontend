@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='AI Operations Monitoring' description='Review AI-assisted matching quality, usage and model health.' action='Download report' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['AI-101', 'Provider recommendation engine', '99.2% uptime', 'Active'], ['AI-102', 'Natural language service search', '98.6% uptime', 'Active'], ['AI-103', 'Smart category classification', 'Needs evaluation', 'Pending review']]}/>;}

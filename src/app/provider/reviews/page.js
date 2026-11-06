@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Ratings & Customer Reviews' description='Review customer feedback and monitor your service quality.' action='Respond to review' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['REV-410', 'Kamal Perera · Electrical repair', '5.0 / 5', 'Completed'], ['REV-409', 'Amaya Silva · Fan installation', '4.8 / 5', 'Completed'], ['REV-408', 'Ruwan Jay · Inspection', '4.5 / 5', 'Completed']]}/>;}

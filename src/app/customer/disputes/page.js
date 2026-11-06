@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Disputes & Claims' description='Track service issues and follow updates from the resolution team.' action='Raise a dispute' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['DSP-0082', 'Late service arrival · BK-3042', 'Nov 06, 2026', 'Open'], ['DSP-0071', 'Payment clarification · BK-2998', 'Oct 20, 2026', 'Resolved']]}/>;}

@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Audit & Activity Logs' description='Review security events and administrative actions across the platform.' action='Export logs' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['LOG-8201', 'Admin sign-in · Admin Operator', 'Today, 9:42 AM', 'Active'], ['LOG-8200', 'Payout approved · PO-2103', 'Today, 9:18 AM', 'Completed'], ['LOG-8199', 'Provider verification updated', 'Yesterday, 4:12 PM', 'Completed']]}/>;}

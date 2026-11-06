@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Incoming & Active Bookings' description='Respond to new requests and manage jobs in progress.' action='View calendar' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['BK-2048', 'Electrical repair · Kamal Perera', 'Today · 10:30 AM', 'Confirmed'], ['BK-2047', 'Ceiling fan install · Amaya Silva', 'Today · 2:00 PM', 'In progress'], ['BK-2046', 'Wiring inspection · Ruwan Jay', 'Tomorrow · 9:00 AM', 'Pending']]}/>;}

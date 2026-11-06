@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Payment Transactions' description='Monitor escrow payments, transaction outcomes and refunds.' action='Export report' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['PAY-5012', 'BK-10482 · Visa', 'LKR 8,500', 'Completed'], ['PAY-5011', 'BK-10481 · Mastercard', 'LKR 4,200', 'Completed'], ['PAY-5010', 'BK-10480 · Bank transfer', 'LKR 6,000', 'Pending'], ['PAY-5009', 'BK-10479 · Visa', 'LKR 3,500', 'Refunded']]}/>;}

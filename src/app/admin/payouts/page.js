@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Payout Approvals' description='Review provider payout requests and transfer history.' action='Review payout' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['PO-2104', 'Nimal Silva', 'LKR 24,500', 'Pending'], ['PO-2103', 'CoolCare Services', 'LKR 48,000', 'Completed'], ['PO-2102', 'Kasun Perera', 'LKR 12,800', 'Pending'], ['PO-2101', 'CleanPro Lanka', 'LKR 31,200', 'Completed']]}/>;}

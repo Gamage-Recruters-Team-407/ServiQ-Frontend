@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='My Service Offerings' description='Manage your service listings, pricing and coverage areas.' action='Add service' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['SRV-120', 'Electrical repair', 'From LKR 3,500', 'Active'], ['SRV-119', 'Ceiling fan installation', 'From LKR 2,000', 'Active'], ['SRV-118', 'Wiring inspection', 'From LKR 4,500', 'Pending review']]}/>;}

@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Commission Rules' description='Configure marketplace commission rates and review applied rules.' action='Add commission rule' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['COM-01', 'Standard services', '8%', 'Active'], ['COM-02', 'Home maintenance', '10%', 'Active'], ['COM-03', 'Premium providers', '6%', 'Pending review']]}/>;}

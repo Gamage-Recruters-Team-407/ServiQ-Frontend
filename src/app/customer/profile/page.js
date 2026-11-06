@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Profile & Settings' description='Keep your contact details and account preferences up to date.' action='Edit profile' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['Personal details', 'Kamal Perera', 'Customer account', 'Active'], ['Email address', 'kamal.perera@example.com', 'Primary contact', 'Verified'], ['Phone number', '+94 77 123 4567', 'Mobile contact', 'Verified']]}/>;}

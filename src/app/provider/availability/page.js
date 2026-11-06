@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Availability & Calendar' description='Set working hours and manage the time slots customers can book.' action='Add availability' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['Monday – Friday', '8:00 AM – 5:00 PM', 'Weekly schedule', 'Active'], ['Saturday', '9:00 AM – 1:00 PM', 'Weekly schedule', 'Active'], ['Sunday', 'Not available', 'Weekly schedule', 'Completed']]}/>;}

@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Provider Profile & Verification' description='Manage your business details, service areas and verification status.' action='Edit profile' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['Business name', 'Nimal Electrical Services', 'Provider profile', 'Verified'], ['Service area', 'Colombo & Gampaha', 'Coverage', 'Active'], ['Identity documents', 'NIC verified', 'Verification', 'Verified']]}/>;}

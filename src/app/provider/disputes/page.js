@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Dispute Responses' description='Respond to open claims and provide supporting evidence.' action='Submit evidence' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['DSP-0082', 'Late service arrival · BK-2042', 'Nov 06, 2026', 'Open'], ['DSP-0075', 'Work completion query · BK-2018', 'Oct 29, 2026', 'Resolved']]}/>;}

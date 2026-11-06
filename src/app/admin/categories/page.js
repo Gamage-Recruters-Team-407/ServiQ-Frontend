@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Service Categories' description='Organise the service catalogue and maintain marketplace taxonomy.' action='Create category' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['CAT-001', 'Home maintenance', 'Nov 06, 2026', 'Active'], ['CAT-002', 'Cleaning services', 'Nov 05, 2026', 'Active'], ['CAT-003', 'Personal wellness', 'Nov 04, 2026', 'Active'], ['CAT-004', 'Moving & delivery', 'Nov 02, 2026', 'Pending review']]}/>;}

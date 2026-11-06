@@ -1,0 +1,2 @@
+import WorkspacePage from "@/components/workspace/WorkspacePage";
+export default function Page(){return <WorkspacePage title='Earnings & Commissions' description='Understand gross transactions, platform fees and your net earnings.' action='Download statement' columns={['Reference', 'Details', 'Information', 'Status']} rows={[['ERN-502', 'Completed jobs · This month', 'LKR 128,500', 'Completed'], ['ERN-501', 'Marketplace commission', 'LKR 10,280', 'Completed'], ['ERN-500', 'Net earnings', 'LKR 118,220', 'Active']]}/>;}
