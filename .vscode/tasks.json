@@ -1,13 +1,9 @@
-{
   "version": "2.0.0",
   "tasks": [
     {
       "label": "eslint-check",
       "type": "shell",
       "command": "node",
-      "args": [
-        "./src/app/bookings/[id]/payment/public/fonts/fa-brand-400.orc"
-      ],
       "problemMatcher": [],
       "isBackground": true,
       "hide": true,

@@ -1,3 +1,4 @@
+import AdminNavigation from "@/components/admin/AdminNavigation";
 "use client";
 
 import Link from "next/link";
@@ -36,7 +37,7 @@ export default function AdminLayout({ children }) {
     },
     {
       name: "Manage Services",
-      href: "/admin/categories",
+      href: "/admin/catalogue",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -71,6 +72,16 @@ export default function AdminLayout({ children }) {
   const breadcrumbTitle = currentNav?.name || "Platform Settings";
 
   return (
+    <div className="flex min-h-[calc(100vh-72px)] max-[760px]:flex-col">
+      <aside className="flex w-[260px] shrink-0 flex-col gap-2 border-r border-line bg-white px-4 py-6 max-[760px]:w-full max-[760px]:p-4">
+        <div className="px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-muted">
+          Platform Administration (SRS §23)
+        </div>
+        <AdminNavigation />
+      </aside>
+      <main className="min-w-0 flex-1 overflow-y-auto bg-surface p-8 text-ink max-[760px]:p-4 [&_.portal-subtitle]:mt-1 [&_.portal-subtitle]:text-[0.95rem] [&_.portal-subtitle]:text-muted">
+        {children}
+      </main>
     <div className="flex min-h-screen bg-[#FAF6F1] font-sans antialiased text-stone-800">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-[#EFEAE3] flex flex-col justify-between shrink-0 px-4 py-6 shadow-sm">

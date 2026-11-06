@@ -1,11 +1,11 @@
 const STYLES = {
-  Active: { badge: "bg-green-50 text-success ring-green-200", dot: "bg-success" },
-  Inactive: { badge: "bg-slate-50 text-muted ring-slate-200", dot: "bg-slate-400" },
-  Archived: { badge: "bg-slate-50 text-muted ring-slate-200", dot: "bg-slate-400" },
-  "Temporarily Unavailable": { badge: "bg-info text-warning ring-orange-200", dot: "bg-warning" },
+  Active: { badge: "bg-green-50 text-green-700 ring-green-200", dot: "bg-green-600" },
+  Inactive: { badge: "bg-slate-50 text-slate-500 ring-slate-200", dot: "bg-slate-400" },
+  Archived: { badge: "bg-slate-50 text-slate-500 ring-slate-200", dot: "bg-slate-400" },
+  "Temporarily Unavailable": { badge: "bg-orange-100 text-amber-700 ring-orange-200", dot: "bg-amber-600" },
 };
 
-// Status badge for catalogue (categories + services), styled with the Orange & White palette
+// Status badge for catalogue (categories + services)
 export default function CatalogueStatusBadge({ status }) {
   const s = STYLES[status] || STYLES.Inactive;
   return (
