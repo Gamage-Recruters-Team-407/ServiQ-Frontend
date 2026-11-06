@@ -29,11 +29,21 @@ export async function apiClient(endpoint, options = {}) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      throw new Error(data.message || `Request failed with status ${response.status}`);
+      const error = new Error(data.message || `Request failed with status ${response.status}`);
+      error.status = response.status;
+      error.code = data.code;
+      error.data = data;
+      throw error;
     }
 
     return data;
   } catch (error) {
+    if (error.name === "TypeError" || (error.message && error.message.toLowerCase().includes("fetch"))) {
+      const connError = new Error("Unable to connect to the backend server. Please make sure the backend is running on http://localhost:5000.");
+      connError.code = "CONNECTION_REFUSED";
+      console.error(`API Connection Error [${method} ${endpoint}]:`, connError);
+      throw connError;
+    }
     console.error(`API Error [${method} ${endpoint}]:`, error);
     throw error;
   }
