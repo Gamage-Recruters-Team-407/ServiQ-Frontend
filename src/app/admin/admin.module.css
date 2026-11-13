@@ -1,0 +1,172 @@
+
+.adminLayout {
+  --admin-orange: #f58216;
+  --admin-orange-dark: #e66d00;
+  --admin-black: #171717;
+  --admin-muted: #64748b;
+
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  color: var(--admin-black);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 270px;
+  min-width: 270px;
+  height: 100vh;
+  padding: 28px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 30px;
+  color: #171717;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.brandIcon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  color: #ffffff;
+  background: var(--admin-orange);
+}
+
+.brandAccent {
+  color: var(--admin-orange);
+}
+
+.sidebarTitle {
+  padding: 12px 11px;
+  margin-bottom: 12px;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  line-height: 1.8;
+}
+
+.sidebarTitle span {
+  display: block;
+  color: #b0b7c3;
+  font-size: 10px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--admin-orange-dark);
+  background: #fff7ed;
+}
+
+.navLink[href="/admin/analytics"] {
+  color: #c75b00;
+  background: #fff1e3;
+  font-weight: 700;
+}
+
+.sidebarFooter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: auto;
+  padding: 18px 12px 4px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #f8fafc;
+}
+
+.main > * {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminLayout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 15px;
+  }
+
+  .brand {
+    padding-bottom: 15px;
+  }
+
+  .sidebarTitle,
+  .sidebarFooter {
+    display: none;
+  }
+
+  .navigation {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .navLink {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
