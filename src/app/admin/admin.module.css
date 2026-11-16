@@ -1,0 +1,93 @@
+.adminLayout {
+  min-height: calc(100vh - 72px);
+}
+
+.sidebar {
+  background: #ffffff !important;
+  border-right-color: #fed7aa !important;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.75rem 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.brandName {
+  color: #000000;
+}
+
+.brandLogo {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.sidebarTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  color: #c2410c;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.sidebarTitle span {
+  color: #f58216;
+  font-size: 0.65rem;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: #c2410c;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.navLink:hover {
+  background: #9a3412;
+  color: #ffffff;
+}
+
+.sidebarFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding: 1rem 0.75rem 0;
+  border-top: 1px solid #fed7aa;
+  color: #c2410c;
+  font-size: 0.8rem;
+}
+
+.statusDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #f58216;
+  box-shadow: 0 0 0.5rem #f58216;
+}
+
+.main {
+  min-width: 0;
+  background: #ffffff !important;
+  color: #9a3412;
+}
