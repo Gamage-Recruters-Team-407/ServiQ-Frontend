@@ -1,3 +1,4 @@
+
 {
   "name": "serviq-frontend",
   "version": "0.1.0",
@@ -15,6 +16,8 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.5",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "postcss": "^8.5.33",
