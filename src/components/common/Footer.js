@@ -3,108 +3,159 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "var(--bg-secondary)",
-        borderTop: "1px solid var(--border-subtle)",
-        padding: "4rem 0 2rem",
-        marginTop: "auto"
-      }}
-    >
-      <div className="container">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "2.5rem",
-            marginBottom: "3rem"
-          }}
-        >
+    <footer className="mt-auto bg-[#FFFFFF] border-t border-[#E2E8F0] pt-12 pb-8 text-[#0F172A]">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-10">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "8px",
-                  background: "var(--brand-gradient)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1rem"
-                }}
-              >
-                S
-              </div>
-              <span style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem", fontWeight: 800 }}>
-                ServiQ
+            <div className="flex items-center gap-2.5 mb-3.5">
+              <img
+                src="/images/serviQ.png"
+                alt="ServiQ Logo"
+                className="w-7 h-7 object-contain shrink-0"
+              />
+              <span className="text-lg font-extrabold tracking-tight text-[#0F172A]">
+                Servi<span className="text-[#F97316]">Q</span>
               </span>
             </div>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              AI-Powered Local Services Marketplace connecting verified professionals with customers across Sri Lanka with transparent pricing, instant booking, and secure escrow payments.
+            <p className="text-xs sm:text-sm text-[#64748B] leading-relaxed">
+              AI-Powered Local Services Marketplace connecting verified
+              professionals with customers across Sri Lanka with transparent
+              pricing, instant booking, and secure escrow payments.
             </p>
           </div>
 
           <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
+            <h4 className="text-sm font-bold text-[#0F172A] mb-3.5">
               Explore Services
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/services?category=Home+Repairs" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Home Repairs & Maintenance</Link></li>
-              <li><Link href="/services?category=Electrical" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Electrical Services</Link></li>
-              <li><Link href="/services?category=Plumbing" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Plumbing & Sanitation</Link></li>
-              <li><Link href="/services?category=Cleaning" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Deep Cleaning & Janitorial</Link></li>
-              <li><Link href="/services/compare" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Comparison</Link></li>
+            <ul className="flex flex-col gap-2 text-xs sm:text-sm text-[#64748B]">
+              <li>
+                <Link
+                  href="/services?category=Home+Repairs"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Home Repairs &amp; Maintenance
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services?category=Electrical"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Electrical Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services?category=Plumbing"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Plumbing &amp; Sanitation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services?category=Cleaning"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Deep Cleaning &amp; Janitorial
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/compare"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Provider Comparison
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
+            <h4 className="text-sm font-bold text-[#0F172A] mb-3.5">
               For Providers
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><Link href="/register?role=provider" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Become a Service Provider</Link></li>
-              <li><Link href="/provider/dashboard" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Provider Portal</Link></li>
-              <li><Link href="/provider/earnings" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Earnings & Payouts</Link></li>
-              <li><Link href="/provider/availability" style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Calendar & Scheduling</Link></li>
+            <ul className="flex flex-col gap-2 text-xs sm:text-sm text-[#64748B]">
+              <li>
+                <Link
+                  href="/register?role=provider"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Become a Service Provider
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/provider/dashboard"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Provider Portal
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/provider/earnings"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Earnings &amp; Payouts
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/provider/availability"
+                  className="hover:text-[#F97316] transition-colors"
+                >
+                  Calendar &amp; Scheduling
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "1rem", color: "#fff" }}>
-              Platform & Trust
+            <h4 className="text-sm font-bold text-[#0F172A] mb-3.5">
+              Platform &amp; Trust
             </h4>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🛡️ Identity Verified Providers</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>🔒 Escrow Payment Protection</span></li>
-              <li><span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>⚖️ Structured Dispute Resolution</span></li>
-              <li><Link href="/admin/dashboard" style={{ color: "var(--brand-primary)", fontSize: "0.9rem" }}>Platform Administration</Link></li>
+            <ul className="flex flex-col gap-2.5 text-xs sm:text-sm text-[#64748B]">
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#15803D] shrink-0" />
+                <span>Identity Verified Providers</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#F97316] shrink-0" />
+                <span>Escrow Payment Protection</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#B45309] shrink-0" />
+                <span>Structured Dispute Resolution</span>
+              </li>
+              <li>
+                <Link
+                  href="/admin/analytics"
+                  className="font-semibold text-[#F97316] hover:text-[#EA580C] transition-colors"
+                >
+                  Platform Administration
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: "1px solid var(--border-subtle)",
-            paddingTop: "1.5rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "1rem",
-            fontSize: "0.85rem",
-            color: "var(--text-muted)"
-          }}
-        >
+        <div className="border-t border-[#E2E8F0] pt-5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#64748B]">
           <div>
-            © 2026 Gamage Recruiters (Pvt) Ltd. All rights reserved. ServiQ Marketplace SRS v1.0.
+            © 2026 Gamage Recruiters (Pvt) Ltd. All rights reserved. ServiQ
+            Marketplace SRS v1.0.
           </div>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Dispute Policies</span>
+          <div className="flex items-center gap-6">
+            <span className="hover:text-[#0F172A] transition-colors">
+              Privacy Policy
+            </span>
+            <span className="hover:text-[#0F172A] transition-colors">
+              Terms of Service
+            </span>
+            <span className="hover:text-[#0F172A] transition-colors">
+              Dispute Policies
+            </span>
           </div>
         </div>
       </div>

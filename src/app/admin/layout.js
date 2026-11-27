@@ -1,59 +1,16 @@
-
-import Link from "next/link";
-import styles from "./admin.module.css";
-
-const adminLinks = [
-  { href: "/admin/analytics", label: "Analytics Dashboard" },
-  { href: "/admin/users", label: "User & Provider Accounts" },
-  { href: "/admin/categories", label: "Service Categories" },
-  { href: "/admin/bookings", label: "Booking Monitoring" },
-  { href: "/admin/payments", label: "Payment Transactions" },
-  { href: "/admin/commissions", label: "Commission Rules" },
-  { href: "/admin/payouts", label: "Payout Approvals" },
-  { href: "/admin/disputes", label: "Dispute Resolution" },
-  { href: "/admin/ai-monitoring", label: "AI Monitoring" },
-  { href: "/admin/audit-logs", label: "Audit & Activity Logs" },
-];
+import Sidebar from "@/components/common/Sidebar";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className={`portal-layout ${styles.adminLayout}`}>
-      <aside className={`portal-sidebar ${styles.sidebar}`}>
-        <div className={styles.brand}>
-          <span className={styles.brandName}>Servi</span>
-          <img
-            src="/images/serviQ.png"
-            alt="Q"
-            className={styles.brandLogo}
-          />
-        </div>
-
-        <div className={styles.sidebarTitle}>
-          PLATFORM ADMINISTRATION
-          <span>SRS §23</span>
-        </div>
-
-        <nav className={styles.navigation}>
-          {adminLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={styles.navLink}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className={styles.sidebarFooter}>
-          <span className={styles.statusDot} />
-          Admin Workspace
-        </div>
-      </aside>
-
-      <main className={`portal-main ${styles.main}`}>
-        {children}
-      </main>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#FFF7ED] text-[#0F172A]">
+      <Sidebar variant="admin" />
+      <div className="flex-1 min-w-0 flex flex-col">
+        <Navbar variant="admin" />
+        <main className="flex-1 p-5 sm:p-8">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 }
