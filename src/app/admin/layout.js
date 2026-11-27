@@ -1,5 +1,8 @@
 
 import Link from "next/link";
+import LogoutButton from "@/components/auth/LogoutButton";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { USER_ROLES } from "@/utils/constants";
 import styles from "./admin.module.css";
 
 const adminLinks = [
@@ -17,43 +20,56 @@ const adminLinks = [
 
 export default function AdminLayout({ children }) {
   return (
-    <div className={`portal-layout ${styles.adminLayout}`}>
-      <aside className={`portal-sidebar ${styles.sidebar}`}>
-        <div className={styles.brand}>
-          <span className={styles.brandName}>Servi</span>
-          <img
-            src="/images/serviQ.png"
-            alt="Q"
-            className={styles.brandLogo}
-          />
-        </div>
+    <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+      <div className={`portal-layout ${styles.adminLayout}`}>
+        <aside className={`portal-sidebar ${styles.sidebar}`}>
+          <div className={styles.brand}>
+            <span className={styles.brandName}>Servi</span>
+            <img
+              src="/images/serviQ.png"
+              alt="Q"
+              className={styles.brandLogo}
+            />
+          </div>
 
-        <div className={styles.sidebarTitle}>
-          PLATFORM ADMINISTRATION
-          <span>SRS §23</span>
-        </div>
+          <div className={styles.sidebarTitle}>
+            PLATFORM ADMINISTRATION
+            <span>SRS §23</span>
+          </div>
 
-        <nav className={styles.navigation}>
-          {adminLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={styles.navLink}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className={styles.navigation}>
+            {adminLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={styles.navLink}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-        <div className={styles.sidebarFooter}>
-          <span className={styles.statusDot} />
-          Admin Workspace
-        </div>
-      </aside>
+          <div style={{ marginTop: "auto", paddingTop: "1rem" }}>
+            <LogoutButton
+              variant="sidebar"
+              style={{
+                background: "#FFF7ED",
+                borderColor: "#FDBA74",
+                color: "#EA580C",
+                marginBottom: "0.75rem"
+              }}
+            />
+            <div className={styles.sidebarFooter} style={{ marginTop: 0 }}>
+              <span className={styles.statusDot} />
+              Admin Workspace
+            </div>
+          </div>
+        </aside>
 
-      <main className={`portal-main ${styles.main}`}>
-        {children}
-      </main>
-    </div>
+        <main className={`portal-main ${styles.main}`}>
+          {children}
+        </main>
+      </div>
+    </ProtectedRoute>
   );
 }

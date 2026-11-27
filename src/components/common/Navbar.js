@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useNotifications } from "@/context/NotificationContext";
 import { USER_ROLES } from "@/utils/constants";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user, role, switchRole, logout } = useAuth();
+  const { user, role, switchRole } = useAuth();
   const { unreadCount, setIsOpen } = useNotifications();
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
 
@@ -265,6 +266,7 @@ export default function Navbar() {
                 </div>
                 <span>{user.first_name}</span>
               </Link>
+              <LogoutButton variant="navbar" />
             </div>
           ) : (
             <div style={{ display: "flex", gap: "0.5rem" }}>
