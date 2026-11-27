@@ -752,12 +752,18 @@
   color: #F97316;
   cursor: pointer;
   padding: 0;
+  transition: color 0.15s ease;
+}
+
+.resendBtn:hover:not(:disabled) {
+  color: #EA580C;
+  text-decoration: underline;
 }
 
 .resendBtn:disabled {
-  color: #EA580C;
+  color: #64748B;
   opacity: 0.85;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .otpGrid {

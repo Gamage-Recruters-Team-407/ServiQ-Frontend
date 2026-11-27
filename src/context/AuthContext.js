@@ -2,39 +2,45 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { USER_ROLES } from "@/utils/constants";
+import { authService } from "@/services/authService";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  // Default mock user for testing all portals seamlessly
-  const [user, setUser] = useState({
-    id: "usr_mock_customer_01",
-    first_name: "Kamal",
-    last_name: "Perera",
-    email: "kamal.perera@example.com",
-    role: USER_ROLES.CUSTOMER,
-    profile_image: null,
-    account_status: "Active"
-  });
-
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
-    // Sync with localStorage if available
-    const storedUser = localStorage.getItem("serviq_user");
-    const storedToken = localStorage.getItem("serviq_token");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error("Failed to parse stored user", err);
+    try {
+      if (localStorage.getItem("serviq_logged_out") === "1") {
+        setUser(null);
+        setToken(null);
+        return;
       }
+
+      const storedUser = localStorage.getItem("serviq_user");
+      const storedToken = localStorage.getItem("serviq_token");
+      if (storedUser && storedToken) {
+        setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+      } else {
+        setUser(null);
+        setToken(null);
+      }
+    } catch (err) {
+      console.error("Failed to parse stored user", err);
+      setUser(null);
+      setToken(null);
+    } finally {
+      setAuthReady(true);
     }
-    if (storedToken) setToken(storedToken);
   }, []);
 
   const switchRole = (role) => {
-    let mockUser = { ...user, role };
+    localStorage.removeItem("serviq_logged_out");
+    let mockUser = { ...(user || {}), role, user_role: role };
     if (role === USER_ROLES.PROVIDER) {
       mockUser = {
         id: "usr_mock_provider_01",
@@ -42,6 +48,7 @@ export function AuthProvider({ children }) {
         last_name: "Silva",
         email: "nimal.silva@services.lk",
         role: USER_ROLES.PROVIDER,
+        user_role: USER_ROLES.PROVIDER,
         provider_type: "Individual",
         account_status: "Active",
         verification_status: "Verified"
@@ -53,6 +60,7 @@ export function AuthProvider({ children }) {
         last_name: "Operator",
         email: "admin@serviq.lk",
         role: USER_ROLES.ADMIN,
+        user_role: USER_ROLES.ADMIN,
         account_status: "Active"
       };
     } else {
@@ -62,29 +70,72 @@ export function AuthProvider({ children }) {
         last_name: "Perera",
         email: "kamal.perera@example.com",
         role: USER_ROLES.CUSTOMER,
+        user_role: USER_ROLES.CUSTOMER,
         account_status: "Active"
       };
     }
     setUser(mockUser);
+    setToken("mock_role_switch_token");
     localStorage.setItem("serviq_user", JSON.stringify(mockUser));
+    localStorage.setItem("serviq_token", "mock_role_switch_token");
+    setAuthReady(true);
   };
 
   const login = (userData, jwtToken) => {
+    localStorage.removeItem("serviq_logged_out");
     setUser(userData);
-    setToken(jwtToken);
+    setToken(jwtToken || null);
     localStorage.setItem("serviq_user", JSON.stringify(userData));
-    localStorage.setItem("serviq_token", jwtToken);
+    if (jwtToken) {
+      localStorage.setItem("serviq_token", jwtToken);
+    } else {
+      localStorage.removeItem("serviq_token");
+    }
+    setAuthReady(true);
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("serviq_user");
-    localStorage.removeItem("serviq_token");
+  const logout = async () => {
+    setIsLoggingOut(true);
+    let serverRevoked = false;
+    const activeToken =
+      token || (typeof window !== "undefined" ? localStorage.getItem("serviq_token") : null);
+
+    try {
+      if (activeToken && activeToken !== "mock_role_switch_token") {
+        await authService.logout();
+        serverRevoked = true;
+      }
+    } catch (err) {
+      // Clear local session even if server is offline or token already expired
+      console.warn("Server logout request failed; clearing local session.", err);
+    } finally {
+      setUser(null);
+      setToken(null);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("serviq_user");
+        localStorage.removeItem("serviq_token");
+        localStorage.setItem("serviq_logged_out", "1");
+      }
+      setIsLoggingOut(false);
+    }
+
+    return { success: true, serverRevoked };
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, role: user?.role, switchRole, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        role: user?.user_role || user?.role || null,
+        authReady,
+        isAuthenticated: Boolean(user && token),
+        isLoggingOut,
+        switchRole,
+        login,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
