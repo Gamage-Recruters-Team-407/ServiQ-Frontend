@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+﻿import "@/styles/globals.css";
 
 export const metadata = {
   title: "ServiQ - Local Services Marketplace",
@@ -8,8 +8,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
+      <body className="min-h-screen bg-[#FFFFFF] text-[#0F172A] antialiased">
+        {children}
       </body>
     </html>
   );
