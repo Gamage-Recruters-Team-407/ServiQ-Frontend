@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 
 export const metadata = {
   title: "ServiQ - Local Services Marketplace",
-  description: "AI-Powered Local Services Marketplace"
+  description: "AI-Powered Local Services Marketplace",
 };
 
 export default function RootLayout({ children }) {
