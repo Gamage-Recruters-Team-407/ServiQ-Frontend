@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [otpSent, setOtpSent] = useState(false);
-  const [resendSeconds, setResendSeconds] = useState(45);
+  const [resendSeconds, setResendSeconds] = useState(0);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [resetDone, setResetDone] = useState(false);
@@ -32,13 +32,15 @@ export default function ForgotPasswordPage() {
   const [fieldErrors, setFieldErrors] = useState({});
   const [alert, setAlert] = useState(null);
 
+  const isCooldownActive = otpSent && resendSeconds > 0;
+
   useEffect(() => {
-    if (!otpSent || resendSeconds <= 0) return;
+    if (!isCooldownActive) return;
     const timer = setInterval(() => {
-      setResendSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+      setResendSeconds((prev) => (prev <= 1 ? 0 : prev - 1));
     }, 1000);
     return () => clearInterval(timer);
-  }, [otpSent, resendSeconds]);
+  }, [isCooldownActive]);
 
   const otpCode = otpDigits.join("");
   const isStepTwoReady = otpSent || otpCode.length === 6;
@@ -48,14 +50,14 @@ export default function ForgotPasswordPage() {
     if (!identifier.trim()) {
       setFieldErrors((prev) => ({
         ...prev,
-        identifier: "Enter your registered email address or phone number."
+        identifier: "Enter your registered email address."
       }));
       return;
     }
     if (!isValidIdentifier(identifier)) {
       setFieldErrors((prev) => ({
         ...prev,
-        identifier: "Enter a valid email address or phone number."
+        identifier: "Enter a valid email address."
       }));
       return;
     }
@@ -69,6 +71,8 @@ export default function ForgotPasswordPage() {
       });
       setOtpSent(true);
       setResendSeconds(45);
+      setOtpDigits(["", "", "", "", "", ""]);
+      setFieldErrors((prev) => ({ ...prev, otp: "" }));
       setAlert({
         type: "success",
         message: "A 6-digit verification code has been sent to your registered contact."
@@ -230,7 +234,7 @@ export default function ForgotPasswordPage() {
 
         <h1 className={styles.recoveryTitle}>Forgot Password?</h1>
         <p className={styles.recoverySubtitle}>
-          No worries! Enter your registered email address or phone number and we will send you a
+          No worries! Enter your registered email address and we will send you a
           verification code to reset it.
         </p>
 
@@ -250,7 +254,7 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleResetPassword} className={styles.formStack} noValidate>
             <div className={styles.fieldGroup}>
               <label htmlFor="recovery-identifier" className={styles.fieldLabel}>
-                Registered Email or Phone
+                Registered Email
               </label>
               <div className={styles.inputWrapper}>
                 <span className={styles.inputIconLeft}>
@@ -268,9 +272,8 @@ export default function ForgotPasswordPage() {
                       setFieldErrors((prev) => ({ ...prev, identifier: "" }));
                     }
                   }}
-                  className={`${styles.inputField} ${styles.inputFieldWithLeftIcon} ${
-                    fieldErrors.identifier ? styles.inputFieldError : ""
-                  }`}
+                  className={`${styles.inputField} ${styles.inputFieldWithLeftIcon} ${fieldErrors.identifier ? styles.inputFieldError : ""
+                    }`}
                   aria-invalid={Boolean(fieldErrors.identifier)}
                 />
               </div>
@@ -283,13 +286,15 @@ export default function ForgotPasswordPage() {
               type="button"
               className={styles.primaryBtn}
               onClick={handleSendOtp}
-              disabled={sendingOtp}
+              disabled={sendingOtp || isCooldownActive}
             >
               {sendingOtp ? (
                 <>
                   <span className={styles.spinner} aria-hidden="true" />
                   Sending 6-Digit OTP...
                 </>
+              ) : isCooldownActive ? (
+                `OTP Sent (Resend in ${resendSeconds}s)`
               ) : otpSent ? (
                 "Resend 6-Digit OTP Code"
               ) : (
@@ -304,11 +309,13 @@ export default function ForgotPasswordPage() {
                   type="button"
                   className={styles.resendBtn}
                   onClick={handleSendOtp}
-                  disabled={sendingOtp || (otpSent && resendSeconds > 0)}
+                  disabled={sendingOtp || isCooldownActive}
                 >
-                  {otpSent && resendSeconds > 0
-                    ? `Resend Code (${resendSeconds}s)`
-                    : "Resend Code (45s)"}
+                  {sendingOtp
+                    ? "Sending..."
+                    : isCooldownActive
+                      ? `Resend Code (${resendSeconds}s)`
+                      : "Resend Code"}
                 </button>
               </div>
 
@@ -327,9 +334,8 @@ export default function ForgotPasswordPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className={`${styles.otpInput} ${
-                      fieldErrors.otp ? styles.inputFieldError : ""
-                    }`}
+                    className={`${styles.otpInput} ${fieldErrors.otp ? styles.inputFieldError : ""
+                      }`}
                   />
                 ))}
               </div>
@@ -357,9 +363,8 @@ export default function ForgotPasswordPage() {
                       setFieldErrors((prev) => ({ ...prev, newPassword: "" }));
                     }
                   }}
-                  className={`${styles.inputField} ${styles.inputFieldWithRightBtn} ${
-                    fieldErrors.newPassword ? styles.inputFieldError : ""
-                  }`}
+                  className={`${styles.inputField} ${styles.inputFieldWithRightBtn} ${fieldErrors.newPassword ? styles.inputFieldError : ""
+                    }`}
                   aria-invalid={Boolean(fieldErrors.newPassword)}
                 />
                 <button
