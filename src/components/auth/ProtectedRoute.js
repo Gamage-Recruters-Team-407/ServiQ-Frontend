@@ -86,24 +86,6 @@ export default function ProtectedRoute({ allowedRoles = [], children }) {
             boxShadow: "0 18px 40px rgba(15, 23, 42, 0.08)"
           }}
         >
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              backgroundColor: "#FEF2F2",
-              border: "1px solid #FECACA",
-              color: "#DC2626",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: 800,
-              fontSize: "1.1rem",
-              marginBottom: "1rem"
-            }}
-          >
-            403
-          </div>
           <h1 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#0F172A", marginBottom: "0.5rem" }}>
             Access Denied
           </h1>
