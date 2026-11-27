@@ -3,10 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { useNotifications } from "@/context/NotificationContext";
+import { USER_ROLES } from "@/utils/constants";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 export default function Navbar({ variant = "admin" }) {
   const pathname = usePathname();
+  const { user, role, switchRole } = useAuth();
+  const { unreadCount, setIsOpen } = useNotifications();
+  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
 
   const getBreadcrumb = () => {
     const segments = pathname.split("/").filter(Boolean);
@@ -82,12 +88,53 @@ export default function Navbar({ variant = "admin" }) {
           <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#F97316]" />
         </button>
 
-        <Link
-          href={info.sectionHref}
-          className="w-9 h-9 rounded-full bg-[#FFEDD5] hover:bg-[#FDBA74]/50 text-[#EA580C] text-xs font-bold flex items-center justify-center transition-colors"
-        >
-          {info.initials}
-        </Link>
+          {/* Auth State */}
+          {user ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <Link
+                href={getDashboardLink()}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.4rem 0.8rem",
+                  borderRadius: "var(--radius-md)",
+                  background: "var(--bg-tertiary)",
+                  fontSize: "0.85rem",
+                  color: "#fff"
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: "50%",
+                    background: "var(--brand-primary)",
+                    color: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.75rem",
+                    fontWeight: 700
+                  }}
+                >
+                  {user.first_name?.[0] || "U"}
+                </div>
+                <span>{user.first_name}</span>
+              </Link>
+              <LogoutButton variant="navbar" />
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <Link href="/login" className="btn btn-secondary btn-sm">
+                Sign In
+              </Link>
+              <Link href="/register" className="btn btn-primary btn-sm">
+                Get Started
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
