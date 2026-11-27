@@ -82,3 +82,24 @@ export const NOTIFICATION_CHANNELS = {
   EMAIL: "Email",
   SMS: "SMS"
 };
+
+export const NOTIFICATION_EVENT_TYPES = {
+  ACCOUNT_REGISTRATION: "Account Registration",
+  BOOKING_REQUEST: "Booking Request",
+  BOOKING_ACCEPTANCE_OR_REJECTION: "Booking Acceptance or Rejection",
+  SCHEDULE_OR_SERVICE_UPDATE: "Schedule or Service Update",
+  PAYMENT_STATUS_CHANGE: "Payment Status Change",
+  SERVICE_COMPLETION: "Service Completion",
+  REVIEW_REQUEST: "Review Request",
+  DISPUTE_UPDATE: "Dispute Update",
+  EARNINGS_UPDATE: "Earnings Update",
+  PAYOUT_UPDATE: "Payout Update",
+  OTHER: "Other"
+};
+
+export const NOTIFICATION_STATUSES = {
+  SUBMITTED: "Submitted",
+  DELIVERED: "Delivered",
+  READ: "Read",
+  FAILED: "Failed"
+};
