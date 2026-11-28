@@ -1,190 +1,376 @@
+// src/app/customer/profile/page.js
+// http://localhost:3000/customer/profile / (/customer/profile)
 "use client";
 
-import { useState } from "react";
-import CustomerIcon from "@/components/customer/CustomerIcon";
-
-const initialProfile = {
-  firstName: "Kamal",
-  lastName: "Perera",
-  email: "kamal.perera@example.com",
-  phone: "+94 77 234 5678",
-  address: "24 Flower Road",
-  city: "Colombo 07",
-};
-
-function Field({ label, name, value, onChange, type = "text", placeholder }) {
-  return (
-    <label className="block">
-      <span className="mb-2 block text-sm font-semibold text-slate-700">{label}</span>
-      <input
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-orange-100"
-      />
-    </label>
-  );
-}
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { customerService } from "@/services/customerService";
+import { AuthAlert } from "@/components/auth/AuthShared"; 
 
 export default function CustomerProfilePage() {
-  const [profile, setProfile] = useState(initialProfile);
-  const [emailUpdates, setEmailUpdates] = useState(true);
-  const [bookingAlerts, setBookingAlerts] = useState(true);
-  const [saveMessage, setSaveMessage] = useState("");
+  const router = useRouter();
+  const { logout, user: authUser } = useAuth();
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setProfile((current) => ({ ...current, [name]: value }));
-    setSaveMessage("");
-  }
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  
+  const [alert, setAlert] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    setSaveMessage("Your profile changes are saved.");
+  const [profile, setProfile] = useState(null);
+  
+  // Form State
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    bio: "",
+    avatar_url: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      postal_code: "",
+      country: "Sri Lanka",
+      location: { type: "Point", coordinates: [0, 0] }
+    },
+    preferences: {
+      language: "en",
+      notification_channels: ["In-App"]
+    }
+  });
+
+  // 1. Load Profile Data on Mount
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const response = await customerService.getProfile();
+      const data = response.data || response; // apiClient return format එක අනුව
+      
+      setProfile(data);
+      
+      // Populate Form Data
+      const cust = data.customer_profile || {};
+      const usr = data.user || {};
+      
+      setFormData({
+        first_name: cust.profile_details?.first_name || usr.first_name || "",
+        last_name: cust.profile_details?.last_name || usr.last_name || "",
+        phone_number: cust.profile_details?.phone_number || usr.phone_number || "",
+        bio: cust.profile_details?.bio || "",
+        avatar_url: cust.profile_details?.avatar_url || usr.profile_image || "",
+        address: {
+          street: cust.profile_details?.address?.street || "",
+          city: cust.profile_details?.address?.city || "",
+          state: cust.profile_details?.address?.state || "",
+          postal_code: cust.profile_details?.address?.postal_code || "",
+          country: cust.profile_details?.address?.country || "Sri Lanka",
+          location: cust.profile_details?.address?.location || { type: "Point", coordinates: [0, 0] }
+        },
+        preferences: {
+          language: cust.preferences?.language || "en",
+          notification_channels: cust.preferences?.notification_channels || ["In-App"]
+        }
+      });
+    } catch (err) {
+      setAlert({ type: "error", message: err.message || "Failed to load profile." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 2. Handle Input Changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData(prev => ({
+        ...prev,
+        [parent]: { ...prev[parent], [child]: value }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // 3. Save Profile
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setAlert(null);
+
+    try {
+      const response = await customerService.updateProfile(formData);
+      setAlert({ type: "success", message: "Profile updated successfully!" });
+      setIsEditing(false);
+      fetchProfile(); // Refresh data
+    } catch (err) {
+      setAlert({ type: "error", message: err.message || "Failed to update profile." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // 4. Delete Account
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      await customerService.deleteAccount();
+      await logout(); // Clear local auth state
+      router.push("/login");
+    } catch (err) {
+      setAlert({ type: "error", message: err.message || "Failed to delete account." });
+      setShowDeleteModal(false);
+      setDeleting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="mx-auto max-w-[1080px] space-y-8">
-      <section>
-        <p className="text-sm font-semibold text-brand">Account settings</p>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-ink sm:text-[34px]">My profile</h1>
-            <p className="mt-2 text-sm text-slate-500 sm:text-base">
-              Manage your personal details and how we keep in touch.
-            </p>
-          </div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3.5 py-2 text-xs font-bold text-green-700">
-            <span className="h-2 w-2 rounded-full bg-green-600" /> Account active
-          </span>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-ink">My Profile</h1>
+          <p className="text-muted text-sm mt-1">Manage your personal information and preferences.</p>
         </div>
-      </section>
-
-      <form onSubmit={handleSubmit} className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.7fr)_minmax(260px,0.8fr)]">
-        <div className="space-y-6">
-          <section className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-7">
-            <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-50 text-brand">
-                <CustomerIcon name="user" size={19} />
-              </span>
-              <div>
-                <h2 className="font-extrabold text-ink">Personal information</h2>
-                <p className="mt-0.5 text-xs text-slate-500">Your details help providers identify you.</p>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center">
-              <div className="grid h-[76px] w-[76px] shrink-0 place-items-center rounded-full bg-orange-100 text-xl font-extrabold text-brand">
-                {profile.firstName.slice(0, 1)}{profile.lastName.slice(0, 1)}
-              </div>
-              <div>
-                <p className="font-bold text-ink">{profile.firstName} {profile.lastName}</p>
-                <p className="mt-1 text-sm text-slate-500">Member since January 2024</p>
-                <button
-                  type="button"
-                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:text-brand-hover"
-                  onClick={() => setSaveMessage("Profile photo upload will be available soon.")}
-                >
-                  <CustomerIcon name="edit" size={14} /> Change profile photo
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-7 grid gap-5 sm:grid-cols-2">
-              <Field label="First name" name="firstName" value={profile.firstName} onChange={handleChange} />
-              <Field label="Last name" name="lastName" value={profile.lastName} onChange={handleChange} />
-              <Field label="Email address" name="email" type="email" value={profile.email} onChange={handleChange} />
-              <Field label="Phone number" name="phone" type="tel" value={profile.phone} onChange={handleChange} />
-            </div>
-          </section>
-
-          <section className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-7">
-            <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-50 text-brand">
-                <CustomerIcon name="home" size={19} />
-              </span>
-              <div>
-                <h2 className="font-extrabold text-ink">Service address</h2>
-                <p className="mt-0.5 text-xs text-slate-500">Your preferred location for home services.</p>
-              </div>
-            </div>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <Field label="Street address" name="address" value={profile.address} onChange={handleChange} />
-              <Field label="City / area" name="city" value={profile.city} onChange={handleChange} />
-            </div>
-            <div className="mt-4 flex items-start gap-2 rounded-xl bg-slate-50 p-3.5 text-xs leading-5 text-slate-500">
-              <CustomerIcon name="pin" size={16} className="mt-0.5 shrink-0 text-brand" />
-              This address will be available when you book your next service.
-            </div>
-          </section>
-        </div>
-
-        <aside className="space-y-6">
-          <section className="rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
-            <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-50 text-brand">
-                <CustomerIcon name="bell" size={19} />
-              </span>
-              <div>
-                <h2 className="font-extrabold text-ink">Notifications</h2>
-                <p className="mt-0.5 text-xs text-slate-500">Choose what you hear from us.</p>
-              </div>
-            </div>
-            <div className="divide-y divide-slate-100">
-              <label className="flex cursor-pointer items-center justify-between gap-4 py-4">
-                <span>
-                  <span className="block text-sm font-bold text-ink">Booking updates</span>
-                  <span className="mt-1 block text-xs leading-5 text-slate-500">Confirmations and appointment reminders</span>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={bookingAlerts}
-                  onChange={(event) => setBookingAlerts(event.target.checked)}
-                  className="h-5 w-5 shrink-0 accent-[#F97316]"
-                />
-              </label>
-              <label className="flex cursor-pointer items-center justify-between gap-4 py-4">
-                <span>
-                  <span className="block text-sm font-bold text-ink">Offers & updates</span>
-                  <span className="mt-1 block text-xs leading-5 text-slate-500">Helpful tips and occasional offers</span>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={emailUpdates}
-                  onChange={(event) => setEmailUpdates(event.target.checked)}
-                  className="h-5 w-5 shrink-0 accent-[#F97316]"
-                />
-              </label>
-            </div>
-          </section>
-
-          <section className="rounded-2xl border border-orange-100 bg-brand-wash p-5 sm:p-6">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-white text-brand">
-              <CustomerIcon name="shield" size={19} />
-            </div>
-            <h2 className="mt-4 font-extrabold text-ink">Your information is safe</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Your contact details are only shared with professionals when you make a booking.
-            </p>
-          </section>
-
-          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center lg:flex-col lg:items-stretch">
+        {!isEditing ? (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="px-4 py-2 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+          >
+            Edit Profile
+          </button>
+        ) : (
+          <div className="flex gap-3">
             <button
-              type="submit"
-              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-hover"
+              onClick={() => {
+                setIsEditing(false);
+                fetchProfile(); // Reset form
+              }}
+              className="px-4 py-2 border border-line text-ink font-semibold rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <CustomerIcon name="check" size={17} /> Save changes
+              Cancel
             </button>
-            {saveMessage && (
-              <p role="status" className="text-sm font-semibold text-green-700">
-                {saveMessage}
-              </p>
-            )}
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="px-4 py-2 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors disabled:opacity-50"
+            >
+              {saving ? "Saving..." : "Save Changes"}
+            </button>
           </div>
-        </aside>
+        )}
+      </div>
+
+      <AuthAlert type={alert?.type} message={alert?.message} />
+
+      {/* Profile Form */}
+      <form onSubmit={handleSave} className="bg-white border border-line rounded-xl shadow-card p-6 space-y-6">
+        
+        {/* Basic Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1">First Name</label>
+            <input
+              type="text"
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1">Last Name</label>
+            <input
+              type="text"
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1">Email (Read-Only)</label>
+            <input
+              type="email"
+              value={profile?.user?.email || ""}
+              disabled
+              className="w-full px-4 py-2 border border-line rounded-lg bg-gray-50 text-muted cursor-not-allowed"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink mb-1">Phone Number</label>
+            <input
+              type="text"
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-ink mb-1">Avatar URL</label>
+          <input
+            type="text"
+            name="avatar_url"
+            value={formData.avatar_url}
+            onChange={handleChange}
+            disabled={!isEditing}
+            placeholder="https://example.com/avatar.jpg"
+            className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-ink mb-1">Bio</label>
+          <textarea
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            disabled={!isEditing}
+            rows={3}
+            className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+          />
+        </div>
+
+        {/* Address Section */}
+        <div className="border-t border-line pt-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">Address Details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-ink mb-1">Street</label>
+              <input
+                type="text"
+                name="address.street"
+                value={formData.address.street}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink mb-1">City</label>
+              <input
+                type="text"
+                name="address.city"
+                value={formData.address.city}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink mb-1">State / Province</label>
+              <input
+                type="text"
+                name="address.state"
+                value={formData.address.state}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink mb-1">Postal Code</label>
+              <input
+                type="text"
+                name="address.postal_code"
+                value={formData.address.postal_code}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Preferences Section */}
+        <div className="border-t border-line pt-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">Preferences</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-ink mb-1">Language</label>
+              <select
+                name="preferences.language"
+                value={formData.preferences.language}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 border border-line rounded-lg focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition disabled:bg-gray-50 disabled:text-muted"
+              >
+                <option value="en">English</option>
+                <option value="si">Sinhala</option>
+                <option value="ta">Tamil</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </form>
+
+      {/* Danger Zone: Delete Account */}
+      <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-red-700 mb-2">Danger Zone</h3>
+        <p className="text-sm text-red-600 mb-4">
+          Once you delete your account, there is no going back. All your data, bookings, and history will be permanently removed.
+        </p>
+        <button
+          onClick={() => setShowDeleteModal(true)}
+          className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Delete My Account
+        </button>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-card max-w-md w-full p-6 space-y-4">
+            <h3 className="text-xl font-bold text-ink">Are you absolutely sure?</h3>
+            <p className="text-muted text-sm">
+              This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+            </p>
+            <div className="flex gap-3 justify-end pt-2">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="px-4 py-2 border border-line text-ink font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleting}
+                className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                {deleting && <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>}
+                {deleting ? "Deleting..." : "Yes, Delete My Account"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
